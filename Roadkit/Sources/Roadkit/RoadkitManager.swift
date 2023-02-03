@@ -17,8 +17,6 @@ public class RoadkitManager: ObservableObject {
     // MARK: - Variables
     
     public var topics = CurrentValueSubject<[Topic], Never>([])
-    
-    private let host = "https://europe-west3-roadkit-dev-swift.cloudfunctions.net"
     private var cancellable: AnyCancellable?
     
     private var projectID = ""
@@ -34,25 +32,60 @@ public class RoadkitManager: ObservableObject {
      The userID is used to check whether the current user voted for a topic. If no userID is provided, the value of "didVote" will always be `false`.
      
      - Parameter projectId: The ID of your app
-     - Parameter userId: The ID of your currently logged in user
+     - Parameter userId: The ID of your currently logged in user (can be empty)
      */
-    public func setProjectID(projectID: String, userID: String = "") {
+    public func setupRoadkit(projectID: String, userID: String) {
         self.projectID = projectID
         self.userID = userID
-        
-        self.fetchTopics()
     }
     
+    public func updateUserID(with userID: String) {
+        guard userID != self.userID else { return }
+        self.userID = userID
+    }
+    
+    /**
+     Create URL Request with data body.
+     
+     The url request uses a body to submit different variables needed by the backend.
+     */
+    private func createRequest(method: HTTPMethod, route: Routes, topic: NewTopic? = nil) -> URLRequest? {
+        guard !projectID.isEmpty else {
+            print("-----> No ProjectID available!")
+            return nil
+        }
+        
+        var request = URLRequest(url: route.url)
+        request.httpMethod = method.rawValue
+        
+        if let topic {
+            var headers = request.allHTTPHeaderFields ?? [:]
+            headers["Content-Type"] = "application/json"
+            request.allHTTPHeaderFields = headers
+            request.httpBody = try? JSONEncoder().encode(topic)
+        }
+        
+        return request
+    }
+}
+
+
+
+// MARK: - Fetch Topics
+extension RoadkitManager {
     /**
      Fetch published topics for your project.
      */
     public func fetchTopics() {
-        guard let request = createRequest() else {
+        let route = Routes(endpoint: .topics, projectID: projectID, userID: userID)
+        
+        guard let request = createRequest(method: .get, route: route) else {
             print("-----> URL request could not be created!")
             return
         }
         
-        self.cancellable = URLSession.shared.dataTaskPublisher(for: request)
+        self.cancellable = URLSession.shared
+            .dataTaskPublisher(for: request)
             .tryMap { output in
                 guard let response = output.response as? HTTPURLResponse, response.statusCode == 200 else {
                     throw HTTPError.statusCode(code: (output.response as? HTTPURLResponse)?.statusCode ?? 0)
@@ -61,41 +94,85 @@ public class RoadkitManager: ObservableObject {
                 return output.data
             }
             .decode(type: [Topic].self, decoder: JSONDecoder())
-            .eraseToAnyPublisher()
             .receive(on: RunLoop.main)
             .sink(receiveCompletion: { completion in
                 switch completion {
-                case .finished: break
-                case .failure(let error): print(error.localizedDescription)
+                case .finished:
+                    break
+                case .failure(let error):
+                    print(error.localizedDescription)
                 }
-            }, receiveValue: { [unowned self] topics in
+            }) { [unowned self] topics in
                 self.topics.send(topics)
                 self.cancellable?.cancel()
-            })
+            }
     }
-    
+}
+
+
+// MARK: - Vote Topic
+extension RoadkitManager {
     /**
-     Create URL Request with data body.
+     Vote for a specific topic.
      
-     The url request uses a body to submit different variables needed by the backend to return published topics.
+     Votes are submitted for features and bugs, but our Client only shows votes for features, so it's better to restrict voting to features on the user side.
+     
+     - Parameter topicId: The ID of the topic to be upvoted
+     - Parameter userId: The current user's ID (a string must be passed which is not empty)
      */
-    private func createRequest() -> URLRequest? {
-        guard !projectID.isEmpty else {
-            print("-----> No ProjectID available!")
-            return nil
+    public func voteTopic(topicId: String, userId: String) -> AnyPublisher<String, Error> {
+        let route = Routes(endpoint: .vote, topicID: topicId, userID: userId)
+        
+        guard let request = createRequest(method: .put, route: route) else {
+            print("-----> URL request could not be created!")
+            return Fail(error: NSError(domain: "URL request could not be created", code: -10001, userInfo: nil)).eraseToAnyPublisher()
         }
         
-        var urlComponents = URLComponents(string: host + projectID + userID)!
-        
-        guard let url = urlComponents.url else {
-            print("-----> URL could not be created!")
-            return nil
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        
-        return request
+        return URLSession.shared
+            .dataTaskPublisher(for: request)
+            .tryMap { output in
+                guard let response = output.response as? HTTPURLResponse, response.statusCode == 200,
+                      let dataString = String(data: output.data, encoding: .utf8) else {
+                    
+                    throw HTTPError.statusCode(code: (output.response as? HTTPURLResponse)?.statusCode ?? 0)
+                }
+                
+                return dataString
+            }
+            .eraseToAnyPublisher()
     }
-    
+}
+
+
+// MARK: - Submit Topic
+extension RoadkitManager {
+    /**
+     Post a topic to Roadkit.
+     
+     - Parameter type: TopicType (Feature or Bug)
+     - Parameter title: A short summary
+     - Parameter description: Detailed info on the topic (optional)
+     */
+    public func submitTopic(type: TopicType, title: String, description: String?) -> AnyPublisher<String, Error> {
+        let route = Routes(endpoint: .submit)
+        let newTopic = NewTopic(title: title, description: description, type: type, projectId: projectID, userId: userID)
+        
+        guard let request = createRequest(method: .post, route: route, topic: newTopic) else {
+            print("-----> URL request could not be created!")
+            return Fail(error: NSError(domain: "URL request could not be created", code: -10001, userInfo: nil)).eraseToAnyPublisher()
+        }
+        
+        return URLSession.shared
+            .dataTaskPublisher(for: request)
+            .tryMap { output in
+                guard let response = output.response as? HTTPURLResponse, response.statusCode == 200,
+                      let dataString = String(data: output.data, encoding: .utf8) else {
+                    
+                    throw HTTPError.statusCode(code: (output.response as? HTTPURLResponse)?.statusCode ?? 0)
+                }
+                
+                return dataString
+            }
+            .eraseToAnyPublisher()
+    }
 }

@@ -2,11 +2,11 @@
 //  TopicType.swift
 //  
 //
-//  Created by Kevin Waltz on 02.02.23.
+//  Created by Kevin Waltz on 03.02.23.
 //
 
 import Foundation
 
-enum TopicType: String {
+public enum TopicType: String {
     case feature, bug
 }
