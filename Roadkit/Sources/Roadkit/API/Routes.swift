@@ -9,7 +9,7 @@ import Foundation
 
 struct Routes {
     enum Endpoint {
-        case topics, vote, submit
+        case topics, vote
     }
     
     private let host = "https://europe-west3-roadkit-dev-swift.cloudfunctions.net/topics/"
@@ -29,8 +29,6 @@ struct Routes {
             unsafeURL = URL(string: host + "\(projectID)/\(userID)")
         case .vote:
             unsafeURL = URL(string: host + "\(topicID)/\(userID)")
-        case .submit:
-            unsafeURL = URL(string: host)
         }
         
         guard let safeURL = unsafeURL else {

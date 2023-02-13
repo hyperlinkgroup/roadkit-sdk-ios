@@ -8,5 +8,5 @@
 import Foundation
 
 public enum TopicStatus: String {
-    case backlog, planned, inProgress, done
+    case open, backlog, planned, inProgress, done
 }

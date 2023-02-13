@@ -7,8 +7,10 @@
 
 import Foundation
 
-public struct Topic: Codable {
-    public let id: String
+public struct Topic: RoadkitObjectModel {
+    public var id: String?
+    public var topicId: String { id ?? ""}
+    
     public let title: String
     public let description: String?
     public let type: String
