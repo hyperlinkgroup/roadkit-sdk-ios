@@ -74,8 +74,6 @@ extension RoadkitManager {
      Fetch published topics for your project.
      */
     public func fetchTopics() {
-        checkCredentials()
-        
         let route = Routes(endpoint: .topics, projectID: projectID, userID: userID)
         
         guard let request = createRequest(method: .get, route: route) else {
@@ -120,8 +118,6 @@ extension RoadkitManager {
      - Parameter userId: The current user's ID (a string must be passed which is not empty)
      */
     public func voteTopic(topicId: String, userId: String) -> AnyPublisher<String, Error> {
-        checkCredentials()
-        
         let route = Routes(endpoint: .vote, topicID: topicId, userID: userId)
         
         guard let request = createRequest(method: .put, route: route) else {
@@ -155,8 +151,6 @@ extension RoadkitManager {
      - Parameter description: Detailed info on the topic (optional)
      */
     public func submitTopic(type: TopicType, title: String, description: String?) -> AnyPublisher<String, Error> {
-        checkCredentials()
-        
         let route = Routes(endpoint: .topics, projectID: projectID, userID: userID)
         let newTopic = NewTopic(type: type.rawValue, title: title, description: description)
         
@@ -184,11 +178,11 @@ extension RoadkitManager {
 // MARK: - Error
 extension RoadkitManager {
     /**
-     A projectID needs to be provided, otherwise an error will be thrown.
+     ProjectID and userID need to be provided, otherwise an error will be thrown.
      */
     private func checkCredentials() {
-        guard !projectID.isEmpty else {
-            fatalError("Roadkit not initialised: No projectID provided.")
+        guard !projectID.isEmpty, !userID.isEmpty else {
+            fatalError("Roadkit not initialised: No projectID or userID provided.")
         }
     }
 }
