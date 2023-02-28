@@ -12,7 +12,7 @@ struct Routes {
         case topics, vote
     }
     
-    private let host = "https://europe-west3-roadkit-prod-swift.cloudfunctions.net/topics/"
+    private let host = "https://europe-west3-roadkit-swift.cloudfunctions.net/topics/"
     
     var endpoint: Endpoint
     
