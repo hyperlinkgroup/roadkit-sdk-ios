@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  NetworkResponse.swift
 //  
 //
 //  Created by Kevin Waltz on 03.02.23.

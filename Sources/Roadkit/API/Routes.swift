@@ -12,13 +12,13 @@ struct Routes {
         case topics, vote
     }
     
-    private let host = "https://europe-west3-roadkit-dev-swift.cloudfunctions.net/topics/"
+    private let host = "https://europe-west3-roadkit-prod-swift.cloudfunctions.net/topics/"
     
     var endpoint: Endpoint
     
     var projectID = ""
     var topicID = ""
-    var userID = ""
+    var userID: String
     
     
     var url: URL {

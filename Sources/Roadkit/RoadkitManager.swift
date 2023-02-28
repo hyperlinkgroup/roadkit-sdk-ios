@@ -50,13 +50,10 @@ public class RoadkitManager: ObservableObject {
      The url request uses a body to submit different variables needed by the backend.
      */
     private func createRequest(method: HTTPMethod, route: Routes, topic: NewTopic? = nil) -> URLRequest? {
-        guard !projectID.isEmpty else {
-            print("-----> No ProjectID available!")
-            return nil
-        }
+        checkCredentials()
         
         var request = URLRequest(url: route.url)
-        request.httpMethod = method.rawValue
+        request.httpMethod = method.httpMethod
         
         if let topic {
             var headers = request.allHTTPHeaderFields ?? [:]
@@ -77,6 +74,8 @@ extension RoadkitManager {
      Fetch published topics for your project.
      */
     public func fetchTopics() {
+        checkCredentials()
+        
         let route = Routes(endpoint: .topics, projectID: projectID, userID: userID)
         
         guard let request = createRequest(method: .get, route: route) else {
@@ -121,6 +120,8 @@ extension RoadkitManager {
      - Parameter userId: The current user's ID (a string must be passed which is not empty)
      */
     public func voteTopic(topicId: String, userId: String) -> AnyPublisher<String, Error> {
+        checkCredentials()
+        
         let route = Routes(endpoint: .vote, topicID: topicId, userID: userId)
         
         guard let request = createRequest(method: .put, route: route) else {
@@ -154,6 +155,8 @@ extension RoadkitManager {
      - Parameter description: Detailed info on the topic (optional)
      */
     public func submitTopic(type: TopicType, title: String, description: String?) -> AnyPublisher<String, Error> {
+        checkCredentials()
+        
         let route = Routes(endpoint: .topics, projectID: projectID, userID: userID)
         let newTopic = NewTopic(type: type.rawValue, title: title, description: description)
         
@@ -174,5 +177,18 @@ extension RoadkitManager {
                 return dataString
             }
             .eraseToAnyPublisher()
+    }
+}
+
+
+// MARK: - Error
+extension RoadkitManager {
+    /**
+     A projectID needs to be provided, otherwise an error will be thrown.
+     */
+    private func checkCredentials() {
+        guard !projectID.isEmpty else {
+            fatalError("Roadkit not initialised: No projectID provided.")
+        }
     }
 }

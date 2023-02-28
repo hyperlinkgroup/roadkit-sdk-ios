@@ -8,7 +8,10 @@
 import Foundation
 
 enum HTTPMethod: String {
-    case get = "GET",
-         post = "POST",
-         put = "PUT"
+    case get, post, put
+    
+    
+    var httpMethod: String {
+        rawValue.uppercased()
+    }
 }
