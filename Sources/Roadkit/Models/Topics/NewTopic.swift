@@ -8,16 +8,14 @@
 import Foundation
 
 struct NewTopic: Codable {
-    let type, title: String
-    let description: String?
+    let type, notes: String
     let appInfo: AppInfo
     let deviceInfo: DeviceInfo
     
     
-    init(type: String, title: String, description: String?) {
+    init(type: String, description: String) {
         self.type = type
-        self.title = title
-        self.description = description
+        self.notes = description
         self.appInfo = AppInfo()
         self.deviceInfo = DeviceInfo()
     }
