@@ -150,9 +150,9 @@ extension RoadkitManager {
      - Parameter title: A short summary
      - Parameter description: Detailed info on the topic (optional)
      */
-    public func submitTopic(type: TopicType, title: String, description: String?) -> AnyPublisher<String, Error> {
+    public func submitTopic(type: TopicType, description: String) -> AnyPublisher<String, Error> {
         let route = Routes(endpoint: .topics, projectID: projectID, userID: userID)
-        let newTopic = NewTopic(type: type.rawValue, title: title, description: description)
+        let newTopic = NewTopic(type: type.rawValue, description: description)
         
         guard let request = createRequest(method: .post, route: route, topic: newTopic) else {
             print("-----> URL request could not be created!")
