@@ -117,8 +117,8 @@ extension RoadkitManager {
      - Parameter topicId: The ID of the topic to be upvoted
      - Parameter userId: The current user's ID (a string must be passed which is not empty)
      */
-    public func voteTopic(topicId: String, userId: String) -> AnyPublisher<String, Error> {
-        let route = Routes(endpoint: .vote, topicID: topicId, userID: userId)
+    public func voteTopic(topicId: String) -> AnyPublisher<String, Error> {
+        let route = Routes(endpoint: .vote, topicID: topicId, userID: userID)
         
         guard let request = createRequest(method: .put, route: route) else {
             print("-----> URL request could not be created!")
