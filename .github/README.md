@@ -1,6 +1,6 @@
 # Roadkit
 
-Swift Package for simple and fast integration of Roadkit into iOS and macOS apps.
+Roadkit enables you to track user feedback for iOS and macOS apps. You can easily integrate the SDK into all of your apps to receive feedback and show what features and bugs your are currently working on. Our voting feature enables you to track which new features are important to your users. Additionally, you can display a changelog to let everyone know how far your app has come.
 
 
 ---
@@ -22,7 +22,7 @@ Swift Package for simple and fast integration of Roadkit into iOS and macOS apps
 
 ## Installation
 #### Requirements
-The SDK requires an account for AppState.dev with a registered app.
+The SDK requires an account for Roadkit with a registered project.
 
 - iOS 14.0+ / macOS 12.0
 - Xcode 13+
@@ -34,7 +34,7 @@ In Xcode, go to `File > Add Packages` and add `https://github.com/hyperlinkgroup
 
 ## How to Use
 #### Setup
-To setup Roadkit, you need to initiate the SDK with your project's ID and a UserID. The ProjectID can be found in your macOS app, in the info tab of the app. The UserID is the ID of your current user. To setup Roadkit you need to `import Roadkit` on top of your file and then call:
+To setup Roadkit, you need to initialize the SDK with your project's ID and a UserID. The ProjectID can be found in your macOS app, in the info tab of the app. The UserID is the ID of your current user. To setup Roadkit you need to `import Roadkit` on top of your file and then call:
 ```Swift
 RoadkitManager.shared.setupRoadkit(projectID: <String>, userID: <String>)
 ```
