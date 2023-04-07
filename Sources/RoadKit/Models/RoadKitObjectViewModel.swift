@@ -1,5 +1,5 @@
 //
-//  RoadkitObjectViewModel.swift
+//  RoadKitObjectViewModel.swift
 //  
 //
 //  Created by Kevin Waltz on 13.02.23.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-open class RoadkitObjectViewModel<T: RoadkitObjectModel>: ObservableObject, Equatable {
+open class RoadKitObjectViewModel<T: RoadKitObjectModel>: ObservableObject, Equatable {
     
     @Published public var object: T
     
@@ -20,7 +20,7 @@ open class RoadkitObjectViewModel<T: RoadkitObjectModel>: ObservableObject, Equa
         hasher.combine(object)
     }
     
-    public static func == (lhs: RoadkitObjectViewModel, rhs: RoadkitObjectViewModel) -> Bool {
+    public static func == (lhs: RoadKitObjectViewModel, rhs: RoadKitObjectViewModel) -> Bool {
         lhs.object == rhs.object
     }
 }

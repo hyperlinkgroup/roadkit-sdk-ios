@@ -1,5 +1,5 @@
 //
-//  RoadkitManager.swift
+//  RoadKitManager.swift
 //  
 //
 //  Created by Kevin Waltz on 02.02.23.
@@ -8,9 +8,9 @@
 import Foundation
 import Combine
 
-public class RoadkitManager: ObservableObject {
+public class RoadKitManager: ObservableObject {
     
-    public static let shared = RoadkitManager()
+    public static let shared = RoadKitManager()
     
     
     
@@ -34,7 +34,7 @@ public class RoadkitManager: ObservableObject {
      - Parameter projectId: The ID of your app
      - Parameter userId: The ID of your currently logged in user (can be empty)
      */
-    public func setupRoadkit(projectID: String, userID: String) {
+    public func setupRoadKit(projectID: String, userID: String) {
         self.projectID = projectID
         self.userID = userID
     }
@@ -69,7 +69,7 @@ public class RoadkitManager: ObservableObject {
 
 
 // MARK: - Fetch Topics
-extension RoadkitManager {
+extension RoadKitManager {
     /**
      Fetch published topics for your project.
      */
@@ -108,7 +108,7 @@ extension RoadkitManager {
 
 
 // MARK: - Vote Topic
-extension RoadkitManager {
+extension RoadKitManager {
     /**
      Vote for a specific topic.
      
@@ -142,9 +142,9 @@ extension RoadkitManager {
 
 
 // MARK: - Submit Topic
-extension RoadkitManager {
+extension RoadKitManager {
     /**
-     Post a topic to Roadkit.
+     Post a topic to RoadKit.
      
      - Parameter type: TopicType (Feature or Bug)
      - Parameter title: A short summary
@@ -176,13 +176,13 @@ extension RoadkitManager {
 
 
 // MARK: - Error
-extension RoadkitManager {
+extension RoadKitManager {
     /**
      ProjectID and userID need to be provided, otherwise an error will be thrown.
      */
     private func checkCredentials() {
         guard !projectID.isEmpty, !userID.isEmpty else {
-            fatalError("Roadkit not initialised: No projectID or userID provided.")
+            fatalError("RoadKit not initialised: No projectID or userID provided.")
         }
     }
 }
