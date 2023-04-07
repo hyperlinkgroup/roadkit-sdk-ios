@@ -7,7 +7,7 @@
 
 import Foundation
 
-open class RoadkitObjectViewModel<T: RoadkitObjectModel>: ObservableObject, Equatable {
+open class RoadkitObjectViewModel<T: RoadkitObjectModel>: ObservableObject, Identifiable, Equatable {
     
     @Published public var object: T
     

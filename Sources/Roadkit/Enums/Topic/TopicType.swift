@@ -8,5 +8,5 @@
 import Foundation
 
 public enum TopicType: String {
-    case feature, improvement, bug
+    case feedback, feature, improvement, bug
 }
