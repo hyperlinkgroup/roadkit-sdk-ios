@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Topic: RoadkitObjectModel {
+public struct Topic: RoadKitObjectModel {
     public var id: String?
     public var topicId: String { id ?? ""}
     

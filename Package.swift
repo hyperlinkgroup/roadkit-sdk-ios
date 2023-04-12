@@ -4,22 +4,22 @@
 import PackageDescription
 
 let package = Package(
-    name: "Roadkit",
+    name: "RoadKit",
     platforms: [
         .iOS(.v14),
         .macOS(.v12)
     ],
     products: [
         .library(
-            name: "Roadkit",
-            targets: ["Roadkit"]),
+            name: "RoadKit",
+            targets: ["RoadKit"]),
     ],
     dependencies: [
          .package(url: "https://github.com/kaevinio/IOSystem.git", .upToNextMajor(from: "1.0.0"))
     ],
     targets: [
         .target(
-            name: "Roadkit",
+            name: "RoadKit",
             dependencies: [
                 .product(name: "IOSystem", package: "IOSystem")
             ]),
