@@ -1,6 +1,6 @@
-# Roadkit
+# RoadKit
 
-Roadkit enables you to track user feedback for iOS and macOS apps. You can easily integrate the SDK into all of your apps to receive feedback and show what features and bugs your are currently working on. Our voting feature enables you to track which new features are important to your users. Additionally, you can display a changelog to let everyone know how far your app has come.
+RoadKit enables you to track user feedback for iOS and macOS apps. You can easily integrate the SDK into all of your apps to receive feedback and show what features and bugs your are currently working on. Our voting feature enables you to track which new features are important to your users. Additionally, you can display a changelog to let everyone know how far your app has come.
 
 
 ---
@@ -13,8 +13,8 @@ Roadkit enables you to track user feedback for iOS and macOS apps. You can easil
 
 
 ## Features
-- [x] Fetch open topics for your app
-- [x] Post a new topic (Feature, Improvement or Bug)
+- [x] Fetch topics for your app
+- [x] Post a new topic (Feedback, Feature, Improvement or Bug)
 - [x] Vote for a topic
 - [x] Undo votes for a topic
 - [x] Get if the current user has voted for a topic
@@ -22,7 +22,7 @@ Roadkit enables you to track user feedback for iOS and macOS apps. You can easil
 
 ## Installation
 #### Requirements
-The SDK requires an account for Roadkit with a registered project.
+The SDK requires an account for RoadKit with a registered project.
 
 - iOS 14.0+ / macOS 12.0
 - Xcode 13+
@@ -34,27 +34,27 @@ In Xcode, go to `File > Add Packages` and add `https://github.com/hyperlinkgroup
 
 ## How to Use
 #### Setup
-To setup Roadkit, you need to initialize the SDK with your project's ID and a UserID. The ProjectID can be found in your macOS app, in the info tab of the app. The UserID is the ID of your current user. To setup Roadkit you need to `import Roadkit` on top of your file and then call:
+To setup RoadKit, you need to initialize the SDK with your project's ID and a UserID. The ProjectID can be found in your app under the info tab of the respective app. The UserID is the ID of your current user. To setup RoadKit, you need to `import Roadkit` on top of your file and then call:
 ```Swift
-RoadkitManager.shared.setupRoadkit(projectID: <String>, userID: <String>)
+RoadKitManager.shared.setupRoadKit(projectID: <String>, userID: <String>)
 ```
 
 If your user changes, you can call the following function to update the UserID:
 ```Swift
-RoadkitManager.shared.updateUserID(with: <String>)
+RoadKitManager.shared.updateUserID(with: <String>)
 ```
 
 **Important**: The UserID is optional and if you don't provide one, it will be sent as an empty string. We strongly recommend sending a UserID (if you don't authenticate your users, you can create a UUID and store it in your UserDefaults or Keychain). Keep in mind that if no ID is provided, the check wether your user has voted for a specific topic will always return false and voting does not work.
 
 #### Fetching Topics
 All published topics are fetched and kept in the `RoadKitManager` within the package.
-To fetch topics you need to `import Roadkit` on top of your file and call:
+To fetch topics you need to `import RoadKit` on top of your file and call:
 ```Swift
-RoadkitManager.shared.fetchTopics()
+RoadKitManager.shared.fetchTopics()
 ```
 This can be done from any file you want. Topics are stored as a `CurrentValueSubject` using the `Combine` framework. It is best to use combine to read the values by using the `.sink` method and store the results. An example using SwiftUI would be:
 ```Swift
-@ObservedObject var roadkitManager = RoadkitManager.shared
+@ObservedObject var roadkitManager = RoadKitManager.shared
 private var cancellables = Set<AnyCancellable>()
 
 roadkitManager.topics
@@ -66,12 +66,12 @@ roadkitManager.topics
 
 Our RoadKitManager is an `@ObservedObject`, so `.sink` gets called again when the array of topics changes.
 
-**Important**: Combine allows to observe changes on the topics array from the `CurrentValueSubject`, but Roadkit does not support realtime updates. It only gets updated after calling `fetchTopics()` again.
+**Important**: Combine allows to observe changes on the topics array from the `CurrentValueSubject`, but RoadKit does not support realtime updates. It only gets updated after calling `fetchTopics()` again.
 
 #### Posting a topic
 To post a new topic, you only need to submit the type and the topic's description:
 ```Swift
-RoadkitManager.shared.submitTopic(type: <TopicType>, description: <String>)
+RoadKitManager.shared.submitTopic(type: <TopicType>, description: <String>)
     .sink(receiveCompletion: { completion in
       switch completion {
         case .finished:
@@ -83,14 +83,14 @@ RoadkitManager.shared.submitTopic(type: <TopicType>, description: <String>)
     })
     .store(in: &cancellables)
 ```
-The TopicType is an enum and you can set it as `.feature, .improvement or .bug` (you can change the type later in your macOS app). The description is a string, which should be provided by your user by entering text. As soon as it is submitted it will appear in realtime in your macOS app.
+The TopicType is an enum and you can set it as `.feedback, .feature, .improvement or .bug` (you can change the type later in your app). The description is a string, which should be provided by your user by entering text. As soon as it is submitted it will appear in realtime in your app.
 
-**Important**: The default state for a new topic is that it is NOT published. It will only appear in your macOS app, from where you can edit it and publish it to be seen by your users.
+**Important**: The default state for a new topic is that it is NOT published. It will only appear in your app, from where you can edit it and publish it to be seen by your users.
 
 #### Vote for a topic
 To vote a topic you need to pass the TopicID (which you can access from the topic model) and call the following function:
 ```Swift
-RoadkitManager.shared.voteTopic(topicId: <String>)
+RoadKitManager.shared.voteTopic(topicId: <String>)
     .sink(receiveCompletion: { completion in
       switch completion {
         case .finished:
@@ -99,7 +99,7 @@ RoadkitManager.shared.voteTopic(topicId: <String>)
           print(error.localizedDescription)
         }
     }, receiveValue: { _ in
-        RoadkitManager.shared.fetchTopics()
+        RoadKitManager.shared.fetchTopics()
     })
     .store(in: &cancellables)
 ```
