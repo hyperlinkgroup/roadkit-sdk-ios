@@ -1,0 +1,23 @@
+/* 
+  Localizable.strings
+  
+
+  Created by Kevin Waltz on 13.04.23.
+  
+*/
+
+"bugs" = "Fehler";
+"changelogDescription" = "Schau, wie weit wir sind.";
+"details" = "Details";
+"features" = "Funktionen";
+"feedback" = "Feedback";
+"feedbackDescription" = "Sag uns, was du denkst.";
+"improvements" = "Verbesserungen";
+"noContent" = "Hier gibt es aktuell nichts. Schau bald wieder vorbei!";
+"placeholderBugs" = "Es gibt ein Problem mit ...";
+"placeholderFeatures" = "Als Funktion wünsche ich mir ...";
+"placeholderFeedback" = "Ich liebe die App, weil ...";
+"placeholderFeedbackSent" = "Danke für dein Feedback!";
+"placeholderImprovements" = "Die App wäre besser mit ...";
+"send" = "Senden";
+"whatsNext" = "Als Nächstes";
