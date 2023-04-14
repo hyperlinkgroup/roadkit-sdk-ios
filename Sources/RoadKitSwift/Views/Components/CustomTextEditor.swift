@@ -18,6 +18,8 @@ struct CustomTextEditor: View {
                 .opacity(text.isEmpty ? 1 : 0)
                 #if os(iOS)
                 .padding(.top, LayoutValues.minorPadding / 2)
+                #else
+                .padding(.top, LayoutValues.minorPadding / 4)
                 #endif
             
             TextEditor(text: $text)
@@ -25,8 +27,8 @@ struct CustomTextEditor: View {
                 .opacity(text.isEmpty ? 1 : 1)
                 .background(.clear)
                 .onChange(of: text) { text = $0 }
-                #if os(iOS)
                 .scrollContentBackground(.hidden)
+                #if os(iOS)
                 .toolbar {
                     ToolbarItemGroup(placement: .keyboard) {
                         Spacer()
@@ -34,6 +36,8 @@ struct CustomTextEditor: View {
                         Button(action: hideKeyboard) { Image(systemName: "keyboard.chevron.compact.down") }
                     }
                 }
+                #else
+                .padding(.top, LayoutValues.minorPadding / 4)
                 #endif
             
             Text(text).opacity(0).padding(LayoutValues.middlePadding / 4)

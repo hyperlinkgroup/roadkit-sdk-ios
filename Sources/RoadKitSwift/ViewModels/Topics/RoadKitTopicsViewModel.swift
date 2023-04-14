@@ -39,8 +39,11 @@ class RoadKitTopicsViewModel: ObservableObject, Identifiable {
                     .filter { $0.status == RoadKitTopicStatus.done.rawValue }
                     .map { RoadKitTopicViewModel(topic: $0) }
                 
-                self.changelogViewModels = OrderedDictionary(grouping: topicViewModels) { $0.object.version ?? "-" }
+                var changelogViewModels = OrderedDictionary(grouping: topicViewModels) { $0.object.version ?? "-" }
                     .map { RoadKitChangelogViewModel(version: $0.key, topicViewModels: $0.value) }
+                changelogViewModels.sort { $0.version > $1.version }
+                
+                self.changelogViewModels = changelogViewModels
             }
             .store(in: &cancellables)
     }

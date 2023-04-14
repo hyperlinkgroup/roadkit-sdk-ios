@@ -84,7 +84,7 @@ public struct RoadmapView: View {
                             }
                         }
                     }
-                    .padding(.horizontal, LayoutValues.minorPadding)
+                    .padding([.horizontal, .bottom], LayoutValues.minorPadding)
                 }
             }
             .background(primaryBackgroundColor)
