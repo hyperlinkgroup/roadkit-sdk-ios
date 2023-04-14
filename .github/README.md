@@ -1,6 +1,13 @@
 # RoadKit
 
-RoadKit enables you to track user feedback for iOS and macOS apps. You can easily integrate the SDK into all of your apps to receive feedback and show what features and bugs your are currently working on. Our voting feature enables you to track which new features are important to your users. Additionally, you can display a changelog to let everyone know how far your app has come.
+RoadKit enables you to track user feedback for iOS and macOS apps. You can easily integrate the SDK into all of your apps to receive feedback and show what features and bugs you are currently working on. Our voting feature enables you to track what's important to your users, so you can prioritize accordingly. Additionally, you can display a changelog to let everyone know how far your app has come.
+
+Our preset provides everything you need:
+- [x] Display your planned features and bugs
+- [x] Changelog, grouped by version and type
+- [x] A view to submit feedback, feature requests and bug reports
+
+It is built in 100% SwiftUI, optimized for iOS, iPadOS and macOS and localized in English and German.
 
 
 ---
@@ -8,6 +15,7 @@ RoadKit enables you to track user feedback for iOS and macOS apps. You can easil
 
 ## Content
 - [Features](#features)
+- [Screenshots](#screenshots)
 - [Installation](#installation)
 - [How to Use](#how-to-use)
 
@@ -20,13 +28,21 @@ RoadKit enables you to track user feedback for iOS and macOS apps. You can easil
 - [x] Get if the current user has voted for a topic
 
 
+## Screenshots
+This is a working example of how our preset looks:
+
+<img src="assets/readme_roadmap.png" width="200">
+<img src="assets/readme_feedback.png" width="200">
+<img src="assets/readme_changelog.png" width="200">
+
+
 ## Installation
 #### Requirements
 The SDK requires an account for RoadKit with a registered project.
 
-- iOS 14.0+ / macOS 12.0
-- Xcode 13+
-- Swift 5+
+- iOS 16.0+ / macOS 13.0
+- Xcode 14+
+- Swift 5.7+
 
 #### Swift Package Manager
 In Xcode, go to `File > Add Packages` and add `https://github.com/hyperlinkgroup/roadkit-sdk-ios`. Add the package to your desired targets.
@@ -45,6 +61,43 @@ RoadKitManager.shared.updateUserID(with: <String>)
 ```
 
 **Important**: The UserID is optional and if you don't provide one, it will be sent as an empty string. We strongly recommend sending a UserID (if you don't authenticate your users, you can create a UUID and store it in your UserDefaults or Keychain). Keep in mind that if no ID is provided, the check wether your user has voted for a specific topic will always return false and voting does not work.
+
+
+## Using RoadKit with our preset
+Our preset offers you ready-to-use views and built-in capabilities, so you can use RoadKit to it's full extend. You only need to show the Roadmap view, from where your users can vote and suggest features or look at your changelog.
+
+**Important**: The preset accesses the topics you saved in your RoadKit app. If you haven't added any data there, nothing will appear. Also note that topics submitted from your users will **not** show up automatically, you need to publish them in the app.
+
+#### Setup
+
+To display the roadmap view, you only need to call it, either directly within an existing view or from a sheet. The example shows how to show it with a sheet:
+
+```Swift
+var body: some View {
+  VStack {
+    Button {
+      shouldShowRoadmap.toggle()
+    } label: {
+      Text("Show Roadmap")
+    }
+  }
+  .sheet(isPresented: $shouldShowRoadmap) {
+    RoadmapView(isPresented: $shouldShowRoadmap,
+                primaryBackgroundColor: <Color>,
+                secondaryBackgroundColor: <Color>,
+                foregroundColor: <Color>)
+  }
+}
+
+
+@State var shouldShowRoadmap = false
+```
+
+As parameters, pass the colors you'd like to have for the view's background and foreground.
+
+
+## Using RoadKit manually
+If you don't want to use our preset to have more granular control, you can do that anytime.
 
 #### Fetching Topics
 All published topics are fetched and kept in the `RoadKitManager` within the package.
