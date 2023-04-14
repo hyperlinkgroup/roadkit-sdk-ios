@@ -16,7 +16,7 @@ public class RoadKitManager: ObservableObject {
     
     // MARK: - Variables
     
-    public var topics = CurrentValueSubject<[Topic], Never>([])
+    public var topics = CurrentValueSubject<[RoadKitTopic], Never>([])
     private var cancellable: AnyCancellable?
     
     private var projectID = ""
@@ -49,7 +49,7 @@ public class RoadKitManager: ObservableObject {
      
      The url request uses a body to submit different variables needed by the backend.
      */
-    private func createRequest(method: HTTPMethod, route: Routes, topic: NewTopic? = nil) -> URLRequest? {
+    private func createRequest(method: HTTPMethod, route: Routes, topic: NewRoadKitTopic? = nil) -> URLRequest? {
         checkCredentials()
         
         var request = URLRequest(url: route.url)
@@ -90,7 +90,7 @@ extension RoadKitManager {
                 
                 return output.data
             }
-            .decode(type: [Topic].self, decoder: JSONDecoder())
+            .decode(type: [RoadKitTopic].self, decoder: JSONDecoder())
             .receive(on: RunLoop.main)
             .sink(receiveCompletion: { completion in
                 switch completion {
@@ -150,9 +150,9 @@ extension RoadKitManager {
      - Parameter title: A short summary
      - Parameter description: Detailed info on the topic (optional)
      */
-    public func submitTopic(type: TopicType, description: String) -> AnyPublisher<String, Error> {
+    public func submitTopic(type: RoadKitTopicType, description: String) -> AnyPublisher<String, Error> {
         let route = Routes(endpoint: .topics, projectID: projectID, userID: userID)
-        let newTopic = NewTopic(type: type.rawValue, description: description)
+        let newTopic = NewRoadKitTopic(type: type.rawValue, description: description)
         
         guard let request = createRequest(method: .post, route: route, topic: newTopic) else {
             print("-----> URL request could not be created!")

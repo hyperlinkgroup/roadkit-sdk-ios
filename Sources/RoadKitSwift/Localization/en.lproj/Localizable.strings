@@ -1,0 +1,23 @@
+/* 
+  Localizable.strings
+  
+
+  Created by Kevin Waltz on 13.04.23.
+  
+*/
+
+"bugs" = "Bugs";
+"changelogDescription" = "See how far we've come.";
+"details" = "Details";
+"features" = "Features";
+"feedback" = "Feedback";
+"feedbackDescription" = "Tell us what you think.";
+"improvements" = "Improvements";
+"noContent" = "There is currently nothing to display. Check again soon!";
+"placeholderBugs" = "There is a problem with ...";
+"placeholderFeatures" = "I would like the app to feature ...";
+"placeholderFeedback" = "I love the app because ...";
+"placeholderFeedbackSent" = "Thank you for your feedback!";
+"placeholderImprovements" = "The app would would be better with ...";
+"send" = "Send";
+"whatsNext" = "What's Next";
