@@ -32,11 +32,29 @@ public class RoadKitManager: ObservableObject {
      The userID is used to check whether the current user voted for a topic. If no userID is provided, the value of "didVote" will always be `false`.
      
      - Parameter projectId: The ID of your app
-     - Parameter userId: The ID of your currently logged in user (can be empty)
+     - Parameter method: Setup RoadKit anonymously if you have no user ID
+     - Parameter userId: Required if you select "userID" as method
      */
-    public func setupRoadKit(projectID: String, userID: String) {
+    public func setupRoadKit(projectID: String, method: SetupMethod, userID: String? = nil) {
         self.projectID = projectID
-        self.userID = userID
+        
+        switch method {
+        case .anonymous:
+            if let anonymousUserID = UserDefaults.standard.string(forKey: "anonymousUserID") {
+                self.userID = anonymousUserID
+            } else {
+                let anonymousUserID = UUID().uuidString
+                self.userID = anonymousUserID
+                
+                UserDefaults.standard.set(anonymousUserID, forKey: "anonymousUserID")
+            }
+        case .userID:
+            guard let userID else {
+                fatalError("RoadKit not initialised: No userID provided.")
+            }
+            
+            self.userID = userID
+        }
     }
     
     public func updateUserID(with userID: String) {
