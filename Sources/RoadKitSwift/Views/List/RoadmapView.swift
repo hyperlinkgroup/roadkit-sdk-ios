@@ -25,6 +25,9 @@ public struct RoadmapView: View {
                         navigationBar.navigationItem(image: Image(systemName: "chevron.down"), color: foregroundColor, action: dismissView)
                     }
                 
+                ZStack(alignment: .bottom) {
+                    LogoView()
+                    
                     VStack(spacing: LayoutValues.middlePadding * 2) {
                         HStack(spacing: LayoutValues.minorPadding) {
                             Button(action: showFeedbackSheet) {
@@ -34,7 +37,6 @@ public struct RoadmapView: View {
                                                      header: "Feedback",
                                                      details: Strings.feedbackDescription)
                             }
-                            .buttonStyle(.plain)
                             
                             NavigationLink {
                                 ChangelogView(primaryBackgroundColor: primaryBackgroundColor,
@@ -48,7 +50,6 @@ public struct RoadmapView: View {
                                                      header: "Changelog",
                                                      details: Strings.changelogDescription)
                             }
-                            .buttonStyle(.plain)
                         }
                         
                         if !topicsViewModel.didFetchTopics {
@@ -88,11 +89,14 @@ public struct RoadmapView: View {
                                         }
                                     }
                                 }
+                                .padding(.bottom, 120)
                             }
                         }
                     }
-                    .padding([.horizontal, .bottom], LayoutValues.minorPadding)
+                }
+                .padding([.horizontal, .bottom], LayoutValues.minorPadding)
             }
+            .buttonStyle(.plain)
             .background(primaryBackgroundColor)
             .sheet(isPresented: $shouldShowFeedback) {
                 FeedbackView(primaryBackgroundColor: primaryBackgroundColor,
