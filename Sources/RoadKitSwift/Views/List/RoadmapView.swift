@@ -25,7 +25,6 @@ public struct RoadmapView: View {
                         navigationBar.navigationItem(image: Image(systemName: "chevron.down"), color: foregroundColor, action: dismissView)
                     }
                 
-                ScrollView(showsIndicators: false) {
                     VStack(spacing: LayoutValues.middlePadding * 2) {
                         HStack(spacing: LayoutValues.minorPadding) {
                             Button(action: showFeedbackSheet) {
@@ -52,32 +51,40 @@ public struct RoadmapView: View {
                             .buttonStyle(.plain)
                         }
                         
-                        VStack(spacing: LayoutValues.minorPadding / 2) {
-                            Text(Strings.whatsNext, bundle: .module)
-                                .font(.headline)
-                                .foregroundColor(.gray)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                            
-                            Picker("", selection: $roadmapSelection) {
-                                ForEach(RoadmapSelection.allCases) { selection in
-                                    Text(selection.title, bundle: .module)
-                                        .tag(selection)
-                                }
-                            }
-                            .pickerStyle(.segmented)
-                            .labelsHidden()
-                            .padding(.bottom, LayoutValues.minorPadding)
-                            
-                            if topicViewModels.isEmpty {
-                                ListPlaceholderView(backgroundColor: secondaryBackgroundColor, foregroundColor: foregroundColor)
-                            } else {
-                                LazyVStack(spacing: LayoutValues.minorPadding) {
-                                    ForEach(topicViewModels, id: \.id) { featureViewModel in
-                                        VStack(spacing: LayoutValues.minorPadding / 2) {
-                                            RoadmapItemView(backgroundColor: secondaryBackgroundColor,
-                                                            foregroundColor: foregroundColor,
-                                                            featureViewModel: featureViewModel,
-                                                            showVoting: true)
+                        if !topicsViewModel.didFetchTopics {
+                            Spacer()
+                            ProgressView()
+                            Spacer()
+                        } else {
+                            ScrollView(showsIndicators: false) {
+                                VStack(spacing: LayoutValues.minorPadding / 2) {
+                                    Text(Strings.whatsNext, bundle: .module)
+                                        .font(.headline)
+                                        .foregroundColor(.gray)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                    
+                                    Picker("", selection: $roadmapSelection) {
+                                        ForEach(RoadmapSelection.allCases) { selection in
+                                            Text(selection.title, bundle: .module)
+                                                .tag(selection)
+                                        }
+                                    }
+                                    .pickerStyle(.segmented)
+                                    .labelsHidden()
+                                    .padding(.bottom, LayoutValues.minorPadding)
+                                    
+                                    if topicsViewModel.didFetchTopics && topicViewModels.isEmpty {
+                                        ListPlaceholderView(backgroundColor: secondaryBackgroundColor, foregroundColor: foregroundColor)
+                                    } else {
+                                        LazyVStack(spacing: LayoutValues.minorPadding) {
+                                            ForEach(topicViewModels, id: \.id) { featureViewModel in
+                                                VStack(spacing: LayoutValues.minorPadding / 2) {
+                                                    RoadmapItemView(backgroundColor: secondaryBackgroundColor,
+                                                                    foregroundColor: foregroundColor,
+                                                                    featureViewModel: featureViewModel,
+                                                                    showVoting: true)
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -85,7 +92,6 @@ public struct RoadmapView: View {
                         }
                     }
                     .padding([.horizontal, .bottom], LayoutValues.minorPadding)
-                }
             }
             .background(primaryBackgroundColor)
             .sheet(isPresented: $shouldShowFeedback) {

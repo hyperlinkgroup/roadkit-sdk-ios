@@ -44,6 +44,8 @@ class RoadKitTopicsViewModel: ObservableObject, Identifiable {
                 changelogViewModels.sort { $0.version > $1.version }
                 
                 self.changelogViewModels = changelogViewModels
+                
+                self.didFetchTopics = true
             }
             .store(in: &cancellables)
     }
@@ -58,6 +60,8 @@ class RoadKitTopicsViewModel: ObservableObject, Identifiable {
     @Published var bugViewModels = [RoadKitTopicViewModel]()
     
     @Published var changelogViewModels = [RoadKitChangelogViewModel]()
+    
+    @Published var didFetchTopics = false
     
     
     

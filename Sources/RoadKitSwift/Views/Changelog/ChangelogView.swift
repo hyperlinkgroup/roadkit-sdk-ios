@@ -15,20 +15,26 @@ struct ChangelogView: View {
             Navigationbar(title: "Changelog")
                 .backItem()
             
-            ScrollView {
-                if topicsViewModel.changelogViewModels.isEmpty {
-                    ProgressView()
-                        .progressViewStyle(.circular)
-                } else {
-                    LazyVStack(spacing: LayoutValues.majorPadding) {
-                        ForEach(topicsViewModel.changelogViewModels) { changelogViewModel in
-                            ChangelogItemView(changelogViewModel: changelogViewModel,
-                                              backgroundColor: secondaryBackgroundColor,
-                                              foregroundColor: foregroundColor)
+            if !topicsViewModel.didFetchTopics {
+                Spacer()
+                ProgressView()
+                Spacer()
+            } else {
+                ScrollView(showsIndicators: false) {
+                    if !topicsViewModel.didFetchTopics || topicsViewModel.changelogViewModels.isEmpty {
+                        ListPlaceholderView(backgroundColor: secondaryBackgroundColor, foregroundColor: foregroundColor)
+                    } else {
+                        LazyVStack(spacing: LayoutValues.majorPadding) {
+                            ForEach(topicsViewModel.changelogViewModels) { changelogViewModel in
+                                ChangelogItemView(changelogViewModel: changelogViewModel,
+                                                  backgroundColor: secondaryBackgroundColor,
+                                                  foregroundColor: foregroundColor)
+                            }
                         }
+                        .padding(.horizontal, LayoutValues.minorPadding)
+                        .padding(.bottom, LayoutValues.minorPadding)
+                        
                     }
-                    .padding(.horizontal, LayoutValues.minorPadding)
-                    .padding(.bottom, LayoutValues.minorPadding)
                 }
             }
         }
