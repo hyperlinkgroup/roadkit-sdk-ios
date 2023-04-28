@@ -12,7 +12,7 @@ struct ChangelogView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            Navigationbar(title: "Changelog")
+            Navigationbar(title: Strings.changelogHeader)
                 .backItem()
             
             if !topicsViewModel.didFetchTopics {
@@ -24,16 +24,18 @@ struct ChangelogView: View {
                     if !topicsViewModel.didFetchTopics || topicsViewModel.changelogViewModels.isEmpty {
                         ListPlaceholderView(backgroundColor: secondaryBackgroundColor, foregroundColor: foregroundColor)
                     } else {
-                        LazyVStack(spacing: LayoutValues.majorPadding) {
-                            ForEach(topicsViewModel.changelogViewModels) { changelogViewModel in
-                                ChangelogItemView(changelogViewModel: changelogViewModel,
-                                                  backgroundColor: secondaryBackgroundColor,
-                                                  foregroundColor: foregroundColor)
+                        VStack(spacing: LayoutValues.majorPadding) {
+                            LazyVStack(spacing: LayoutValues.majorPadding) {
+                                ForEach(topicsViewModel.changelogViewModels) { changelogViewModel in
+                                    ChangelogItemView(changelogViewModel: changelogViewModel,
+                                                      backgroundColor: secondaryBackgroundColor,
+                                                      foregroundColor: foregroundColor)
+                                }
                             }
+                            
+                            LogoView(backgroundColor: secondaryBackgroundColor)
                         }
-                        .padding(.horizontal, LayoutValues.minorPadding)
-                        .padding(.bottom, LayoutValues.minorPadding)
-                        
+                        .padding([.horizontal, .bottom], LayoutValues.minorPadding)
                     }
                 }
             }
