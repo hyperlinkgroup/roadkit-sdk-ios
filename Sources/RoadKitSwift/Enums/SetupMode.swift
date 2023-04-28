@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  SetupMode.swift
 //  
 //
 //  Created by Kevin Waltz on 24.04.23.
@@ -7,6 +7,6 @@
 
 import Foundation
 
-public enum SetupMethod {
+public enum SetupMode {
     case anonymous, userID
 }

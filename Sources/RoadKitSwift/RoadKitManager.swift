@@ -22,6 +22,11 @@ public class RoadKitManager: ObservableObject {
     private var projectID = ""
     private var userID = ""
     
+    private var anonymousUserID: String? {
+        get { UserDefaults.standard.string(forKey: "anonymousUserID") }
+        set { UserDefaults.standard.set(newValue, forKey: "anonymousUserID") }
+    }
+    
     
     
     // MARK: - Functions
@@ -32,34 +37,37 @@ public class RoadKitManager: ObservableObject {
      The userID is used to check whether the current user voted for a topic. If no userID is provided, the value of "didVote" will always be `false`.
      
      - Parameter projectId: The ID of your app
-     - Parameter method: Setup RoadKit anonymously if you have no user ID
+     - Parameter mode: Setup RoadKit anonymously if you have no user ID
      - Parameter userId: Required if you select "userID" as method
      */
-    public func setupRoadKit(projectID: String, method: SetupMethod, userID: String? = nil) {
+    public func setupRoadKit(projectID: String, mode: SetupMode, userID: String? = nil) {
         self.projectID = projectID
         
-        switch method {
+        switch mode {
         case .anonymous:
-            if let anonymousUserID = UserDefaults.standard.string(forKey: "anonymousUserID") {
-                self.userID = anonymousUserID
-            } else {
-                let anonymousUserID = UUID().uuidString
-                self.userID = anonymousUserID
-                
-                UserDefaults.standard.set(anonymousUserID, forKey: "anonymousUserID")
-            }
+            switchToAnonymousMode()
         case .userID:
             guard let userID else {
                 fatalError("RoadKit not initialised: No userID provided.")
             }
-            
-            self.userID = userID
+            switchToUserIDMode(userID: userID)
         }
+    }
+    
+    public func switchToAnonymousMode() {
+        let anonymousUserID = self.anonymousUserID ?? UUID().uuidString
+        self.userID = anonymousUserID
+        self.anonymousUserID = anonymousUserID
+    }
+    
+    public func switchToUserIDMode(userID: String) {
+        self.userID = userID
+        self.anonymousUserID = nil
     }
     
     public func updateUserID(with userID: String) {
         guard userID != self.userID else { return }
-        self.userID = userID
+        switchToUserIDMode(userID: userID)
     }
     
     /**
