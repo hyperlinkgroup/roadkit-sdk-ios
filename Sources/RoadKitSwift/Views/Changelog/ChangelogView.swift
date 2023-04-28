@@ -33,7 +33,7 @@ struct ChangelogView: View {
                                 }
                             }
                             
-                            LogoView()
+                            LogoView(backgroundColor: secondaryBackgroundColor)
                         }
                         .padding([.horizontal, .bottom], LayoutValues.minorPadding)
                     }

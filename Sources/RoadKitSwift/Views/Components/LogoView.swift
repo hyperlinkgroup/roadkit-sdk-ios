@@ -30,11 +30,17 @@ struct LogoView: View {
             .background(.white.opacity(0.000001))
             .foregroundColor(.primary)
             .padding(LayoutValues.minorPadding)
-            .background(.thinMaterial)
+            .background(backgroundColor)
             .cornerRadius(LayoutValues.cornerRadius)
             .frame(maxWidth: 150)
         }
         .buttonStyle(.plain)
     }
+    
+    
+    
+    // MARK: - Variables
+    
+    let backgroundColor: Color
     
 }

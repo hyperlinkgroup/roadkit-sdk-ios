@@ -48,6 +48,7 @@ public struct RoadmapView: View {
                                                  details: Strings.changelogDescription)
                         }
                     }
+                    .padding(.horizontal, LayoutValues.minorPadding)
                     
                     if !topicsViewModel.didFetchTopics {
                         Spacer()
@@ -88,12 +89,12 @@ public struct RoadmapView: View {
                                     }
                                 }
                                 
-                                LogoView()
+                                LogoView(backgroundColor: secondaryBackgroundColor)
                             }
+                            .padding([.horizontal, .bottom], LayoutValues.minorPadding)
                         }
                     }
                 }
-                .padding([.horizontal, .bottom], LayoutValues.minorPadding)
             }
             .buttonStyle(.plain)
             .background(primaryBackgroundColor)
