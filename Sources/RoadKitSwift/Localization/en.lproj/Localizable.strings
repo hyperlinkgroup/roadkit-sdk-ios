@@ -13,7 +13,7 @@
 "feedback" = "Feedback";
 "feedbackDescription" = "Tell us what you think.";
 "improvements" = "Improvements";
-"noContent" = "There is currently nothing to display. Check again soon!";
+"noContent" = "There is currently nothing to display.\nCheck again soon!";
 "placeholderBugs" = "There is a problem with ...";
 "placeholderFeatures" = "I would like the app to feature ...";
 "placeholderFeedback" = "I love the app because ...";
