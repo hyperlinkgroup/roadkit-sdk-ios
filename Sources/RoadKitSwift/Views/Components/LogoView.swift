@@ -10,28 +10,31 @@ import SwiftUI
 struct LogoView: View {
     
     var body: some View {
-        HStack(spacing: LayoutValues.minorPadding) {
-            VStack(spacing: LayoutValues.minorPadding / 6) {
-                Text("Provided by")
-                    .font(.callout)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+        Link(destination: URL(string: "https://ssq.es/rok")!) {
+            HStack(spacing: LayoutValues.minorPadding) {
+                VStack(spacing: LayoutValues.minorPadding / 6) {
+                    Text(Strings.providedBy)
+                        .font(.callout)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    Text(Strings.roadkit)
+                        .font(.headline)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
                 
-                Text("RoadKit")
-                    .font(.headline)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                Image("roadkit_logo", bundle: .module)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 36, height: 36)
             }
-            
-            Image("roadkit_logo", bundle: .module)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 36, height: 36)
+            .background(.white.opacity(0.000001))
+            .foregroundColor(.primary)
+            .padding(LayoutValues.minorPadding)
+            .background(.thinMaterial)
+            .cornerRadius(LayoutValues.cornerRadius)
+            .frame(maxWidth: 150)
         }
-        .background(.white.opacity(0.000001))
-        .foregroundColor(.primary)
-        .padding(LayoutValues.minorPadding)
-        .background(.thinMaterial)
-        .cornerRadius(LayoutValues.cornerRadius)
-        .frame(maxWidth: 150)
+        .buttonStyle(.plain)
     }
     
 }

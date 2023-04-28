@@ -12,21 +12,19 @@ struct ChangelogView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            Navigationbar(title: "Changelog")
+            Navigationbar(title: Strings.changelogHeader)
                 .backItem()
             
-            ZStack(alignment: .bottom) {
-                LogoView()
-                
-                if !topicsViewModel.didFetchTopics {
-                    Spacer()
-                    ProgressView()
-                    Spacer()
-                } else {
-                    ScrollView(showsIndicators: false) {
-                        if !topicsViewModel.didFetchTopics || topicsViewModel.changelogViewModels.isEmpty {
-                            ListPlaceholderView(backgroundColor: secondaryBackgroundColor, foregroundColor: foregroundColor)
-                        } else {
+            if !topicsViewModel.didFetchTopics {
+                Spacer()
+                ProgressView()
+                Spacer()
+            } else {
+                ScrollView(showsIndicators: false) {
+                    if !topicsViewModel.didFetchTopics || topicsViewModel.changelogViewModels.isEmpty {
+                        ListPlaceholderView(backgroundColor: secondaryBackgroundColor, foregroundColor: foregroundColor)
+                    } else {
+                        VStack(spacing: LayoutValues.majorPadding) {
                             LazyVStack(spacing: LayoutValues.majorPadding) {
                                 ForEach(topicsViewModel.changelogViewModels) { changelogViewModel in
                                     ChangelogItemView(changelogViewModel: changelogViewModel,
@@ -34,12 +32,13 @@ struct ChangelogView: View {
                                                       foregroundColor: foregroundColor)
                                 }
                             }
-                            .padding(.bottom, 120)
+                            
+                            LogoView()
                         }
+                        .padding([.horizontal, .bottom], LayoutValues.minorPadding)
                     }
                 }
             }
-            .padding([.horizontal, .bottom], LayoutValues.minorPadding)
         }
         .background(primaryBackgroundColor)
         .hiddenNavigationBarStyle()

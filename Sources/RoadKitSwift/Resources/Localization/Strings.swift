@@ -7,7 +7,15 @@
 
 import SwiftUI
 
-struct Strings {    
+struct Strings {
+    static let providedBy = "Provided by"
+    static let roadkit = "RoadKit"
+    
+    static let changelogHeader = "Changelog"
+    static let feedbackHeader = "Feedback"
+    static let roadmapHeader = "Roadmap"
+    
+    
     static let bugs: LocalizedStringKey = "bugs"
     static let changelogDescription: LocalizedStringKey = "changelogDescription"
     static let details: LocalizedStringKey = "details"
