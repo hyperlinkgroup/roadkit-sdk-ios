@@ -62,7 +62,6 @@ public class RoadKitManager: ObservableObject {
     
     public func switchToUserIDMode(userID: String) {
         self.userID = userID
-        self.anonymousUserID = nil
     }
     
     public func updateUserID(with userID: String) {
