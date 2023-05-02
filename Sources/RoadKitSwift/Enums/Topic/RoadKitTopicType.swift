@@ -31,6 +31,10 @@ public enum RoadKitTopicType: String, CaseIterable, Identifiable {
         }
     }
     
+    public var titleString: String {
+        title.toString()
+    }
+    
     public var icon: Image {
         switch self {
         case .feedback: return Image(systemName: "doc.append.fill")
@@ -47,6 +51,34 @@ public enum RoadKitTopicType: String, CaseIterable, Identifiable {
         case .feature: return Strings.placeholderFeatures
         case .improvement: return Strings.placeholderImprovements
         case .bug: return Strings.placeholderBugs
+        }
+    }
+}
+
+extension LocalizedStringKey {
+
+    /**
+     Return localized value of thisLocalizedStringKey
+     */
+    public func toString() -> String {
+        //use reflection
+        let mirror = Mirror(reflecting: self)
+        
+        //try to find 'key' attribute value
+        let attributeLabelAndValue = mirror.children.first { (arg0) -> Bool in
+            let (label, _) = arg0
+            if(label == "key"){
+                return true;
+            }
+            return false;
+        }
+        
+        if(attributeLabelAndValue != nil) {
+            //ask for localization of found key via NSLocalizedString
+            return String.localizedStringWithFormat(NSLocalizedString(attributeLabelAndValue!.value as! String, bundle: .module, comment: ""));
+        }
+        else {
+            return "Swift LocalizedStringKey signature must have changed. @see Apple documentation."
         }
     }
 }
