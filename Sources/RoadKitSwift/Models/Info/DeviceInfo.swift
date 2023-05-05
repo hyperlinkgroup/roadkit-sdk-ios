@@ -16,7 +16,7 @@ struct DeviceInfo: Codable {
         self.platform = SystemManager.platform.rawValue
         self.systemVersion = SystemManager.systemVersion
         self.device = SystemManager.device.name
-        self.deviceName = SystemManager.deviceName.name
+        self.deviceName = SystemManager.deviceName
         self.deviceType = SystemManager.deviceType
     }
 }
