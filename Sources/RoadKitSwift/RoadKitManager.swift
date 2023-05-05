@@ -22,6 +22,11 @@ public class RoadKitManager: ObservableObject {
     private var projectID = ""
     private var userID = ""
     
+    private var anonymousUserID: String? {
+        get { UserDefaults.standard.string(forKey: "anonymousUserID") }
+        set { UserDefaults.standard.set(newValue, forKey: "anonymousUserID") }
+    }
+    
     
     
     // MARK: - Functions
@@ -32,16 +37,36 @@ public class RoadKitManager: ObservableObject {
      The userID is used to check whether the current user voted for a topic. If no userID is provided, the value of "didVote" will always be `false`.
      
      - Parameter projectId: The ID of your app
-     - Parameter userId: The ID of your currently logged in user (can be empty)
+     - Parameter mode: Setup RoadKit anonymously if you have no user ID
+     - Parameter userId: Required if you select "userID" as method
      */
-    public func setupRoadKit(projectID: String, userID: String) {
+    public func setupRoadKit(projectID: String, mode: SetupMode, userID: String? = nil) {
         self.projectID = projectID
+        
+        switch mode {
+        case .anonymous:
+            switchToAnonymousMode()
+        case .userID:
+            guard let userID else {
+                fatalError("RoadKit not initialised: No userID provided.")
+            }
+            switchToUserIDMode(userID: userID)
+        }
+    }
+    
+    public func switchToAnonymousMode() {
+        let anonymousUserID = self.anonymousUserID ?? UUID().uuidString
+        self.userID = anonymousUserID
+        self.anonymousUserID = anonymousUserID
+    }
+    
+    public func switchToUserIDMode(userID: String) {
         self.userID = userID
     }
     
     public func updateUserID(with userID: String) {
         guard userID != self.userID else { return }
-        self.userID = userID
+        switchToUserIDMode(userID: userID)
     }
     
     /**
