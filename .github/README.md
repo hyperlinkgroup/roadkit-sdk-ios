@@ -31,9 +31,7 @@ It is built in 100% SwiftUI, optimized for iOS, iPadOS and macOS and localized i
 ## Screenshots
 This is a working example of how our preset looks:
 
-<img src="assets/readme_roadmap.png" width="200">
-<img src="assets/readme_feedback.png" width="200">
-<img src="assets/readme_changelog.png" width="200">
+<img src="assets/readme_roadmap.png" width="200"> <img src="assets/readme_feedback.png" width="200"> <img src="assets/readme_changelog.png" width="200">
 
 
 ## Installation
@@ -50,18 +48,27 @@ In Xcode, go to `File > Add Packages` and add `https://github.com/hyperlinkgroup
 
 ## How to Use
 #### Setup
-To setup RoadKit, you need to initialize the SDK with your project's ID and a UserID. The ProjectID can be found in your app under the info tab of the respective app. The UserID is the ID of your current user. To setup RoadKit, you need to `import Roadkit` on top of your file and then call:
+To setup RoadKit, you need to initialize the SDK with your project's ID, declare the setup method and (optionally) provide a UserID. The ProjectID can be found in your app under the info tab of the respective app. There are two ways to setup RoadKit: `.anonymously`  or `.userID`. If you select anonymous setup, a UUID is created in the background and saved on the user's device, so that multiple votings from the same device are forbidden. 
+If you choose `.userID` as Setup-Mode, you need to provide the user's ID, otherwise an error is thrown.
 ```Swift
-RoadKitManager.shared.setupRoadKit(projectID: <String>, userID: <String>)
+import RoadKitSwift
+
+RoadKitManager.shared.setupRoadKit(projectID: <String>, mode: .anonymous)
+or
+RoadKitManager.shared.setupRoadKit(projectID: <String>, mode: .userID, userID: <String>)
 ```
+
+You can change the Setup-Mode later, in case a user logs in or out:
+```Swift
+RoadKitManager.shared.switchToAnonymousMode()
+or
+RoadKitManager.shared.switchToUserIDMode(userID: <String>)
+``` 
 
 If your user changes, you can call the following function to update the UserID:
 ```Swift
 RoadKitManager.shared.updateUserID(with: <String>)
 ```
-
-**Important**: The UserID is optional and if you don't provide one, it will be sent as an empty string. We strongly recommend sending a UserID (if you don't authenticate your users, you can create a UUID and store it in your UserDefaults or Keychain). Keep in mind that if no ID is provided, the check wether your user has voted for a specific topic will always return false and voting does not work.
-
 
 ## Using RoadKit with our preset
 Our preset offers you ready-to-use views and built-in capabilities, so you can use RoadKit to it's full extend. You only need to show the Roadmap view, from where your users can vote and suggest features or look at your changelog.

@@ -16,7 +16,7 @@ struct ListPlaceholderView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             
             Image(systemName: "archivebox")
-                .font(.system(size: 36))
+                .font(.system(size: 24))
                 .foregroundColor(foregroundColor)
         }
         .defaultBackground(with: backgroundColor)

@@ -12,7 +12,7 @@ struct FeedbackView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            Navigationbar(title: "Feedback")
+            Navigationbar(title: Strings.feedbackHeader)
                 .navigationItem(image: Image(systemName: "chevron.down"), color: foregroundColor, action: dismissView)
             
             if feedbackSent {
