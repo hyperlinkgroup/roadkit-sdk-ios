@@ -20,6 +20,7 @@ struct ListPlaceholderView: View {
                 .foregroundColor(foregroundColor)
         }
         .defaultBackground(with: backgroundColor)
+        .padding([.horizontal, .bottom], LayoutValues.minorPadding)
     }
     
     

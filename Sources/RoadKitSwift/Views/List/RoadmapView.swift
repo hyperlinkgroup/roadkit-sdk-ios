@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import IONavigation
+//import IONavigation
 
 public struct RoadmapView: View {
     
@@ -18,12 +18,26 @@ public struct RoadmapView: View {
     }
     
     public var body: some View {
-        NavigationStack {
+        NavigationView {
             VStack(spacing: 0) {
-                Navigationbar(title: Strings.roadmapHeader)
-                    .if(isPresented) { navigationBar in
-                        navigationBar.navigationItem(image: Image(systemName: "chevron.down"), color: foregroundColor, action: dismissView)
-                    }
+                HStack() {
+                    Text(Strings.roadmapHeader)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    Button(action: dismissView, label: {
+                        Image(systemName: "chevron.down")
+                    })
+                    .foregroundColor(foregroundColor)
+                }
+                .font(.system(size: Values.navigationTextSize, weight: .semibold))
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .frame(height: Values.navigationBarHeight)
+                .lineLimit(1)
+                .padding(.horizontal, Values.middlePadding)
+                #if os(iOS)
+                .padding(.top, horizontalSizeClass == .compact ? 0 : Values.minorPadding)
+                #else
+                .padding(.top, Values.middlePadding)
+                #endif
                 
                 VStack(spacing: LayoutValues.middlePadding * 2) {
                     HStack(spacing: LayoutValues.minorPadding) {
@@ -106,10 +120,15 @@ public struct RoadmapView: View {
             }
         }
     }
-    
+
     
     
     // MARK: - Variables
+    
+    @Environment(\.presentationMode) var presentationMode
+    #if os(iOS)
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    #endif
     
     @StateObject var topicsViewModel = RoadKitTopicsViewModel.shared
     
@@ -142,7 +161,7 @@ public struct RoadmapView: View {
     }
     
     private func dismissView() {
-        isPresented = false
+        presentationMode.wrappedValue.dismiss()
     }
     
 }

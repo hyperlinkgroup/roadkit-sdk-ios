@@ -27,7 +27,6 @@ struct LogoView: View {
                     .scaledToFit()
                     .frame(width: 36, height: 36)
             }
-            .background(.white.opacity(0.000001))
             .foregroundColor(.primary)
             .padding(LayoutValues.minorPadding)
             .background(backgroundColor)

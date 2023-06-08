@@ -6,14 +6,29 @@
 //
 
 import SwiftUI
-import IONavigation
 
 struct FeedbackView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            Navigationbar(title: Strings.feedbackHeader)
-                .navigationItem(image: Image(systemName: "chevron.down"), color: foregroundColor, action: dismissView)
+            HStack() {
+                Text(Strings.feedbackHeader)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Button(action: dismissView, label: {
+                    Image(systemName: "chevron.down")
+                })
+                .foregroundColor(foregroundColor)
+            }
+            .font(.system(size: Values.navigationTextSize, weight: .semibold))
+            .frame(height: Values.navigationBarHeight)
+            .lineLimit(1)
+            .padding(.horizontal, Values.middlePadding)
+            #if os(iOS)
+            .padding(.top, horizontalSizeClass == .compact ? 0 : Values.minorPadding)
+            #else
+            .padding(.top, Values.middlePadding)
+            #endif
             
             if feedbackSent {
                 FeedbackPlaceholderView(image: Image(systemName: "hands.clap"), description: Strings.placeholderFeedbackSent)
@@ -44,12 +59,18 @@ struct FeedbackView: View {
             }
         }
         .background(primaryBackgroundColor)
-        .macWindowSize(minWidth: 600, maxWidth: 600, minHeight: 600, maxHeight: 600)
+        #if os(macOS)
+        .frame(minWidth: 600, maxWidth: 600, minHeight: 600, maxHeight: 600)
+        #endif
     }
     
     
     
     // MARK: - Variables
+    
+    #if os(iOS)
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    #endif
     
     let primaryBackgroundColor: Color
     let secondaryBackgroundColor: Color

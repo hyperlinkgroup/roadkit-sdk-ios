@@ -17,15 +17,12 @@ struct VotingButton: View {
                 Text(String(describing: featureViewModel.object.votes))
             }
             .font(.subheadline)
-            .background(.white.opacity(0.000001))
             .padding(.vertical, LayoutValues.minorPadding / 4)
             .padding(.horizontal, LayoutValues.minorPadding)
             .foregroundColor(featureViewModel.object.userDidVote ? .white : foregroundColor)
             .background(featureViewModel.object.userDidVote ? foregroundColor : .clear)
             .clipShape(Capsule())
-            .if(!featureViewModel.object.userDidVote) { button in
-                button.overlay { Capsule().strokeBorder(foregroundColor, lineWidth: 2) }
-            }
+            .overlay(Capsule().strokeBorder(foregroundColor, lineWidth: 2))
         }
         .buttonStyle(.plain)
     }

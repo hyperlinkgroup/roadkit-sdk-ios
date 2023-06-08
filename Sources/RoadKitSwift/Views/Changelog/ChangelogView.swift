@@ -6,14 +6,28 @@
 //
 
 import SwiftUI
-import IONavigation
 
 struct ChangelogView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            Navigationbar(title: Strings.changelogHeader)
-                .backItem()
+            HStack(spacing: Values.minorPadding) {
+                Button(action: goBack, label: {
+                    Image(systemName: "chevron.left")
+                })
+                
+                Text(Strings.changelogHeader)
+            }
+            .font(.system(size: Values.navigationTextSize, weight: .semibold))
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(height: Values.navigationBarHeight)
+            .lineLimit(1)
+            .padding(.leading, Values.middlePadding)
+            #if os(iOS)
+            .padding(.top, horizontalSizeClass == .compact ? 0 : Values.minorPadding)
+            #else
+            .padding(.top, Values.middlePadding)
+            #endif
             
             if !topicsViewModel.didFetchTopics {
                 Spacer()
@@ -48,10 +62,22 @@ struct ChangelogView: View {
     
     // MARK: - Variables
     
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    #if os(iOS)
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    #endif
+    
     let primaryBackgroundColor: Color
     let secondaryBackgroundColor: Color
     let foregroundColor: Color
     
     let topicsViewModel: RoadKitTopicsViewModel
     
+    
+    
+    // MARK: - Functions
+    
+    private func goBack() {
+        presentationMode.wrappedValue.dismiss()
+    }
 }
