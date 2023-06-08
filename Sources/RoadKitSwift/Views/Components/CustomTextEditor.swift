@@ -34,8 +34,11 @@ struct CustomTextEditor: View {
                 #else
                 .padding(.top, LayoutValues.minorPadding / 4)
                 #endif
+                .textFieldStyle(.plain)
             
-            Text(text).opacity(0).padding(LayoutValues.middlePadding / 4)
+            Text(text)
+                .opacity(0)
+                .padding(LayoutValues.middlePadding / 4)
                 .font(.body)
         }
         .padding(.top, 2)

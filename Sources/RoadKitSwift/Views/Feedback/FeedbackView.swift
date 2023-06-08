@@ -17,8 +17,11 @@ struct FeedbackView: View {
                 
                 Button(action: dismissView, label: {
                     Image(systemName: "chevron.down")
+                        .frame(width: Values.buttonSize, height: Values.buttonSize)
+                        .background(Color.white.opacity(0.0000001))
+                        .foregroundColor(foregroundColor)
                 })
-                .foregroundColor(foregroundColor)
+                .buttonStyle(.plain)
             }
             .font(.system(size: Values.navigationTextSize, weight: .semibold))
             .frame(height: Values.navigationBarHeight)

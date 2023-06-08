@@ -16,6 +16,8 @@ struct Values {
     
     static let cornerRadius: CGFloat = 8
     
+    static let buttonSize: CGFloat = 30
+    
     static let navigationBarHeight: CGFloat = 44
     static let navigationTextSize: CGFloat = 18
     
@@ -25,6 +27,8 @@ struct Values {
     static let majorPadding: CGFloat = 36
 
     static let cornerRadius: CGFloat = 8
+    
+    static let buttonSize: CGFloat = 36
 
     static let navigationBarHeight: CGFloat = 60
     static let navigationTextSize: CGFloat = 24

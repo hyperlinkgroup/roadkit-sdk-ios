@@ -12,17 +12,22 @@ struct ChangelogView: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack(spacing: Values.minorPadding) {
-                Button(action: goBack, label: {
-                    Image(systemName: "chevron.left")
-                })
-                
+
                 Text(Strings.changelogHeader)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Button(action: dismissView, label: {
+                    Image(systemName: "chevron.down")
+                        .frame(width: Values.buttonSize, height: Values.buttonSize)
+                        .background(Color.white.opacity(0.0000001))
+                        .foregroundColor(foregroundColor)
+                })
+                .buttonStyle(.plain)
             }
             .font(.system(size: Values.navigationTextSize, weight: .semibold))
-            .frame(maxWidth: .infinity, alignment: .leading)
             .frame(height: Values.navigationBarHeight)
             .lineLimit(1)
-            .padding(.leading, Values.middlePadding)
+            .padding(.horizontal, Values.middlePadding)
             #if os(iOS)
             .padding(.top, horizontalSizeClass == .compact ? 0 : Values.minorPadding)
             #else
@@ -56,13 +61,15 @@ struct ChangelogView: View {
         }
         .background(primaryBackgroundColor)
         .hiddenNavigationBarStyle()
+        #if os(macOS)
+        .frame(minWidth: 600, maxWidth: 600, minHeight: 600, maxHeight: 600)
+        #endif
     }
     
     
     
     // MARK: - Variables
     
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     #if os(iOS)
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     #endif
@@ -73,11 +80,12 @@ struct ChangelogView: View {
     
     let topicsViewModel: RoadKitTopicsViewModel
     
+    @Binding var isPresented: Bool
     
     
     // MARK: - Functions
     
-    private func goBack() {
-        presentationMode.wrappedValue.dismiss()
+    private func dismissView() {
+        isPresented = false
     }
 }

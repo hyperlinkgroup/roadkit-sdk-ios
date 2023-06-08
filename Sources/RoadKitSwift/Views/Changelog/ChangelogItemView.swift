@@ -46,6 +46,7 @@ struct ChangelogItemView: View {
             .padding(.horizontal, LayoutValues.minorPadding / 2)
             .defaultBackground(with: backgroundColor)
         }
+        .padding(.horizontal, Values.minorPadding)
     }
     
     
