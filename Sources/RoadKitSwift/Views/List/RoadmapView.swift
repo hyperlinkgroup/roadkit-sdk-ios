@@ -128,7 +128,7 @@ public struct RoadmapView: View {
     
     private var topicViewModels: [RoadKitTopicViewModel] {
         switch roadmapSelection {
-        case .features: return topicsViewModel.featureViewModels
+        case .features: return topicsViewModel.featureViewModels + topicsViewModel.improvementViewModels
         case .bugs: return topicsViewModel.bugViewModels
         }
     }
