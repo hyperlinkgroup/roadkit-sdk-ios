@@ -19,28 +19,10 @@ public struct RoadmapView: View {
     
     public var body: some View {
         VStack(spacing: 0) {
-            HStack() {
-                Text(Strings.roadmapHeader)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                
-                #if os(iOS)
-                Button(action: dismissView, label: {
-                    Image(systemName: "chevron.down")
-                        .frame(width: Values.buttonSize, height: Values.buttonSize)
-                        .background(Color.white.opacity(0.0000001))
-                        .foregroundColor(foregroundColor)
-                })
-                #endif
-            }
-            .font(.system(size: Values.navigationTextSize, weight: .semibold))
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .frame(height: Values.navigationBarHeight)
-            .lineLimit(1)
-            .padding(.horizontal, Values.middlePadding)
             #if os(iOS)
-            .padding(.top, horizontalSizeClass == .compact ? 0 : Values.minorPadding)
+            Navigationbar(header: Strings.roadmapHeader, showButtonToCloseView: true, foregroundColor: foregroundColor, action: dismissView)
             #else
-            .padding(.top, Values.middlePadding)
+            Navigationbar(header: Strings.roadmapHeader, showButtonToCloseView: false, foregroundColor: foregroundColor, action: dismissView)
             #endif
             
             VStack(spacing: LayoutValues.middlePadding * 2) {
@@ -131,9 +113,6 @@ public struct RoadmapView: View {
     // MARK: - Variables
     
     @Environment(\.presentationMode) var presentationMode
-    #if os(iOS)
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    #endif
     
     @StateObject var topicsViewModel = RoadKitTopicsViewModel.shared
     

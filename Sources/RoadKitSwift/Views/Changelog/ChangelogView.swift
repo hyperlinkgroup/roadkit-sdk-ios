@@ -11,28 +11,7 @@ struct ChangelogView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            HStack(spacing: Values.minorPadding) {
-
-                Text(Strings.changelogHeader)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                
-                Button(action: dismissView, label: {
-                    Image(systemName: "chevron.down")
-                        .frame(width: Values.buttonSize, height: Values.buttonSize)
-                        .background(Color.white.opacity(0.0000001))
-                        .foregroundColor(foregroundColor)
-                })
-                .buttonStyle(.plain)
-            }
-            .font(.system(size: Values.navigationTextSize, weight: .semibold))
-            .frame(height: Values.navigationBarHeight)
-            .lineLimit(1)
-            .padding(.horizontal, Values.middlePadding)
-            #if os(iOS)
-            .padding(.top, horizontalSizeClass == .compact ? 0 : Values.minorPadding)
-            #else
-            .padding(.top, Values.middlePadding)
-            #endif
+            Navigationbar(header: Strings.changelogHeader, showButtonToCloseView: true, foregroundColor: foregroundColor, action: dismissView)
             
             if !topicsViewModel.didFetchTopics {
                 Spacer()
@@ -69,10 +48,6 @@ struct ChangelogView: View {
     
     
     // MARK: - Variables
-    
-    #if os(iOS)
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    #endif
     
     let primaryBackgroundColor: Color
     let secondaryBackgroundColor: Color

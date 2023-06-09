@@ -11,27 +11,7 @@ struct FeedbackView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            HStack() {
-                Text(Strings.feedbackHeader)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                
-                Button(action: dismissView, label: {
-                    Image(systemName: "chevron.down")
-                        .frame(width: Values.buttonSize, height: Values.buttonSize)
-                        .background(Color.white.opacity(0.0000001))
-                        .foregroundColor(foregroundColor)
-                })
-                .buttonStyle(.plain)
-            }
-            .font(.system(size: Values.navigationTextSize, weight: .semibold))
-            .frame(height: Values.navigationBarHeight)
-            .lineLimit(1)
-            .padding(.horizontal, Values.middlePadding)
-            #if os(iOS)
-            .padding(.top, horizontalSizeClass == .compact ? 0 : Values.minorPadding)
-            #else
-            .padding(.top, Values.middlePadding)
-            #endif
+            Navigationbar(header: Strings.feedbackHeader, showButtonToCloseView: true, foregroundColor: foregroundColor, action: dismissView)
             
             if feedbackSent {
                 FeedbackPlaceholderView(image: Image(systemName: "hands.clap"), description: Strings.placeholderFeedbackSent)
@@ -70,10 +50,6 @@ struct FeedbackView: View {
     
     
     // MARK: - Variables
-    
-    #if os(iOS)
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    #endif
     
     let primaryBackgroundColor: Color
     let secondaryBackgroundColor: Color
