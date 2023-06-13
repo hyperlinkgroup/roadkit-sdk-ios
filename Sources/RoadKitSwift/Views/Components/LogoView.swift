@@ -31,7 +31,11 @@ struct LogoView: View {
             .padding(LayoutValues.minorPadding)
             .background(backgroundColor)
             .cornerRadius(LayoutValues.cornerRadius)
+            #if os(iOS)
+            .frame(maxWidth: 175)
+            #else
             .frame(maxWidth: 150)
+            #endif
         }
         .buttonStyle(.plain)
     }

@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-//import IONavigation
 
 public struct RoadmapView: View {
     
@@ -18,34 +17,18 @@ public struct RoadmapView: View {
     }
     
     public var body: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: LayoutValues.minorPadding) {
             #if os(iOS)
             Navigationbar(header: Strings.roadmapHeader, showButtonToCloseView: true, foregroundColor: foregroundColor, action: dismissView)
             #else
-            Navigationbar(header: Strings.roadmapHeader, showButtonToCloseView: false, foregroundColor: foregroundColor, action: dismissView)
+            NavigationBar(header: Strings.roadmapHeader, showButtonToCloseView: false, foregroundColor: foregroundColor, action: dismissView)
             #endif
             
             VStack(spacing: LayoutValues.middlePadding * 2) {
-                HStack(spacing: LayoutValues.minorPadding) {
-                    Button(action: showFeedbackSheet) {
-                        RoadmapSelectionView(backgroundColor: secondaryBackgroundColor,
-                                             foregroundColor: foregroundColor,
-                                             icon: Image(systemName: "lightbulb.fill"),
-                                             header: Strings.feedbackHeader,
-                                             details: Strings.feedbackDescription)
-                    }
-                    
-                    Button(action: showChangelogSheet) {
-                        RoadmapSelectionView(backgroundColor: secondaryBackgroundColor,
-                                             foregroundColor: foregroundColor,
-                                             icon: Image(systemName: "map.fill"),
-                                             header: Strings.changelogHeader,
-                                             details: Strings.changelogDescription)
-                    }
-                }
-                .padding(.horizontal, LayoutValues.minorPadding)
                 
                 if !topicsViewModel.didFetchTopics {
+                    actionButtonView
+                    
                     Spacer()
                     ProgressView()
                     Spacer()
@@ -53,6 +36,8 @@ public struct RoadmapView: View {
                     ScrollView(showsIndicators: false) {
                         VStack(spacing: LayoutValues.majorPadding) {
                             VStack(spacing: LayoutValues.minorPadding / 2) {
+                                actionButtonView
+                                
                                 Text(Strings.whatsNext, bundle: .module)
                                     .font(.headline)
                                     .foregroundColor(.gray)
@@ -68,7 +53,7 @@ public struct RoadmapView: View {
                                 .labelsHidden()
                                 .padding(.bottom, LayoutValues.minorPadding)
                                 
-                                if topicsViewModel.didFetchTopics && topicViewModels.isEmpty {
+                                if topicViewModels.isEmpty {
                                     ListPlaceholderView(backgroundColor: secondaryBackgroundColor, foregroundColor: foregroundColor)
                                 } else {
                                     LazyVStack(spacing: LayoutValues.minorPadding) {
@@ -83,13 +68,14 @@ public struct RoadmapView: View {
                                     }
                                 }
                             }
-                            
                             LogoView(backgroundColor: secondaryBackgroundColor)
+
                         }
-                        .padding([.horizontal, .bottom], LayoutValues.minorPadding)
+                        .padding(.bottom, LayoutValues.minorPadding)
                     }
                 }
             }
+            .padding(.horizontal, LayoutValues.minorPadding)
         }
         .buttonStyle(.plain)
         .background(primaryBackgroundColor)
@@ -107,7 +93,26 @@ public struct RoadmapView: View {
                           isPresented: $shouldShowChangeLog)
         }
     }
-
+    
+    var actionButtonView: some View {
+        HStack(spacing: LayoutValues.minorPadding) {
+            Button(action: showFeedbackSheet) {
+                RoadmapSelectionView(backgroundColor: secondaryBackgroundColor,
+                                     foregroundColor: foregroundColor,
+                                     icon: Image(systemName: "lightbulb.fill"),
+                                     header: Strings.feedbackHeader,
+                                     details: Strings.feedbackDescription)
+            }
+            
+            Button(action: showChangelogSheet) {
+                RoadmapSelectionView(backgroundColor: secondaryBackgroundColor,
+                                     foregroundColor: foregroundColor,
+                                     icon: Image(systemName: "map.fill"),
+                                     header: Strings.changelogHeader,
+                                     details: Strings.changelogDescription)
+            }
+        }
+    }
     
     
     // MARK: - Variables

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct Strings {
-    static let providedBy = "Provided by"
+    static let providedBy = "Powered by"
     static let roadkit = "RoadKit"
     
     static let changelogHeader = "Changelog"
