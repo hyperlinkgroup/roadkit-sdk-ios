@@ -13,9 +13,6 @@ struct CapsuleView: View {
         Text(title)
             .font(.footnote.weight(.semibold))
             .foregroundColor(.white)
-            .if(fill) { text in
-                text.frame(maxWidth: .infinity)
-            }
             .padding(.horizontal, LayoutValues.middlePadding / 2)
             .padding(.vertical, LayoutValues.minorPadding / 4)
             .background(background)
@@ -28,6 +25,5 @@ struct CapsuleView: View {
     
     let title: String
     let background: Color
-    var fill = false
     
 }

@@ -22,25 +22,22 @@ struct CustomTextEditor: View {
                 .padding(.top, LayoutValues.minorPadding / 4)
                 #endif
             
-            TextEditor(text: $text)
+            TextField("", text: $text)
+                .frame(maxHeight: .infinity, alignment: .top)
+                .cornerRadius(Values.cornerRadius)
+                .background(Color.clear)
                 .font(.body)
-                .opacity(text.isEmpty ? 1 : 1)
-                .background(.clear)
                 .onChange(of: text) { text = $0 }
-                .scrollContentBackground(.hidden)
                 #if os(iOS)
-                .toolbar {
-                    ToolbarItemGroup(placement: .keyboard) {
-                        Spacer()
-                        
-                        Button(action: hideKeyboard) { Image(systemName: "keyboard.chevron.compact.down") }
-                    }
-                }
+                .padding(.top, LayoutValues.minorPadding / 2)
                 #else
                 .padding(.top, LayoutValues.minorPadding / 4)
                 #endif
+                .textFieldStyle(.plain)
             
-            Text(text).opacity(0).padding(LayoutValues.middlePadding / 4)
+            Text(text)
+                .opacity(0)
+                .padding(LayoutValues.middlePadding / 4)
                 .font(.body)
         }
         .padding(.top, 2)

@@ -6,14 +6,12 @@
 //
 
 import SwiftUI
-import IONavigation
 
 struct FeedbackView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            Navigationbar(title: Strings.feedbackHeader)
-                .navigationItem(image: Image(systemName: "chevron.down"), color: foregroundColor, action: dismissView)
+            NavigationBar(header: Strings.feedbackHeader, showButtonToCloseView: true, foregroundColor: foregroundColor, action: dismissView)
             
             if feedbackSent {
                 FeedbackPlaceholderView(image: Image(systemName: "hands.clap"), description: Strings.placeholderFeedbackSent)
@@ -44,7 +42,9 @@ struct FeedbackView: View {
             }
         }
         .background(primaryBackgroundColor)
-        .macWindowSize(minWidth: 600, maxWidth: 600, minHeight: 600, maxHeight: 600)
+        #if os(macOS)
+        .frame(minWidth: 600, maxWidth: 600, minHeight: 600, maxHeight: 600)
+        #endif
     }
     
     

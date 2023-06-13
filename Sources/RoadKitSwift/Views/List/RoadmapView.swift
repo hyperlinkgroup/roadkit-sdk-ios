@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import IONavigation
 
 public struct RoadmapView: View {
     
@@ -18,73 +17,80 @@ public struct RoadmapView: View {
     }
     
     public var body: some View {
-        NavigationStack {
-            VStack(spacing: LayoutValues.minorPadding) {
-                Navigationbar(title: Strings.roadmapHeader)
-                    .if(isPresented) { navigationBar in
-                        navigationBar.navigationItem(image: Image(systemName: "chevron.down"), color: foregroundColor, action: dismissView)
-                    }
+        VStack(spacing: LayoutValues.minorPadding) {
+            #if os(iOS)
+            Navigationbar(header: Strings.roadmapHeader, showButtonToCloseView: true, foregroundColor: foregroundColor, action: dismissView)
+            #else
+            NavigationBar(header: Strings.roadmapHeader, showButtonToCloseView: false, foregroundColor: foregroundColor, action: dismissView)
+            #endif
+            
+            VStack(spacing: LayoutValues.middlePadding * 2) {
                 
-                VStack(spacing: LayoutValues.middlePadding * 2) {
-                    if !topicsViewModel.didFetchTopics {
-                        actionButtonView
-                        
-                        Spacer()
-                        ProgressView()
-                        Spacer()
-                    } else {
-                        ScrollView(showsIndicators: false) {
-                            VStack(spacing: LayoutValues.majorPadding) {
+                if !topicsViewModel.didFetchTopics {
+                    actionButtonView
+                    
+                    Spacer()
+                    ProgressView()
+                    Spacer()
+                } else {
+                    ScrollView(showsIndicators: false) {
+                        VStack(spacing: LayoutValues.majorPadding) {
+                            VStack(spacing: LayoutValues.minorPadding / 2) {
                                 actionButtonView
                                 
-                                VStack(spacing: LayoutValues.minorPadding / 2) {
-                                    Text(Strings.whatsNext, bundle: .module)
-                                        .font(.headline)
-                                        .foregroundColor(.gray)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                    
-                                    Picker("", selection: $roadmapSelection) {
-                                        ForEach(RoadmapSelection.allCases) { selection in
-                                            Text(selection.title, bundle: .module)
-                                                .tag(selection)
-                                        }
+                                Text(Strings.whatsNext, bundle: .module)
+                                    .font(.headline)
+                                    .foregroundColor(.gray)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                
+                                Picker("", selection: $roadmapSelection) {
+                                    ForEach(RoadmapSelection.allCases) { selection in
+                                        Text(selection.title, bundle: .module)
+                                            .tag(selection)
                                     }
-                                    .pickerStyle(.segmented)
-                                    .labelsHidden()
-                                    .padding(.bottom, LayoutValues.minorPadding)
-                                    
-                                    if topicViewModels.isEmpty {
-                                        ListPlaceholderView(backgroundColor: secondaryBackgroundColor, foregroundColor: foregroundColor)
-                                    } else {
-                                        LazyVStack(spacing: LayoutValues.minorPadding) {
-                                            ForEach(topicViewModels, id: \.id) { featureViewModel in
-                                                VStack(spacing: LayoutValues.minorPadding / 2) {
-                                                    RoadmapItemView(backgroundColor: secondaryBackgroundColor,
-                                                                    foregroundColor: foregroundColor,
-                                                                    featureViewModel: featureViewModel,
-                                                                    showVoting: true)
-                                                }
+                                }
+                                .pickerStyle(.segmented)
+                                .labelsHidden()
+                                .padding(.bottom, LayoutValues.minorPadding)
+                                
+                                if topicViewModels.isEmpty {
+                                    ListPlaceholderView(backgroundColor: secondaryBackgroundColor, foregroundColor: foregroundColor)
+                                } else {
+                                    LazyVStack(spacing: LayoutValues.minorPadding) {
+                                        ForEach(topicViewModels, id: \.id) { featureViewModel in
+                                            VStack(spacing: LayoutValues.minorPadding / 2) {
+                                                RoadmapItemView(backgroundColor: secondaryBackgroundColor,
+                                                                foregroundColor: foregroundColor,
+                                                                featureViewModel: featureViewModel,
+                                                                showVoting: true)
                                             }
                                         }
                                     }
                                 }
-                                
-                                LogoView(backgroundColor: secondaryBackgroundColor)
                             }
-                            .padding(.bottom, LayoutValues.minorPadding)
+                            LogoView(backgroundColor: secondaryBackgroundColor)
+
                         }
+                        .padding(.bottom, LayoutValues.minorPadding)
                     }
                 }
-                .padding(.horizontal, LayoutValues.minorPadding)
             }
-            .buttonStyle(.plain)
-            .background(primaryBackgroundColor)
-            .sheet(isPresented: $shouldShowFeedback) {
-                FeedbackView(primaryBackgroundColor: primaryBackgroundColor,
-                             secondaryBackgroundColor: secondaryBackgroundColor,
-                             foregroundColor: foregroundColor,
-                             isPresented: $shouldShowFeedback)
-            }
+            .padding(.horizontal, LayoutValues.minorPadding)
+        }
+        .buttonStyle(.plain)
+        .background(primaryBackgroundColor)
+        .sheet(isPresented: $shouldShowFeedback) {
+            FeedbackView(primaryBackgroundColor: primaryBackgroundColor,
+                         secondaryBackgroundColor: secondaryBackgroundColor,
+                         foregroundColor: foregroundColor,
+                         isPresented: $shouldShowFeedback)
+        }
+        .sheet(isPresented: $shouldShowChangeLog) {
+            ChangelogView(primaryBackgroundColor: primaryBackgroundColor,
+                          secondaryBackgroundColor: secondaryBackgroundColor,
+                          foregroundColor: foregroundColor,
+                          topicsViewModel: topicsViewModel,
+                          isPresented: $shouldShowChangeLog)
         }
     }
     
@@ -98,12 +104,7 @@ public struct RoadmapView: View {
                                      details: Strings.feedbackDescription)
             }
             
-            NavigationLink {
-                ChangelogView(primaryBackgroundColor: primaryBackgroundColor,
-                              secondaryBackgroundColor: secondaryBackgroundColor,
-                              foregroundColor: foregroundColor,
-                              topicsViewModel: topicsViewModel)
-            } label: {
+            Button(action: showChangelogSheet) {
                 RoadmapSelectionView(backgroundColor: secondaryBackgroundColor,
                                      foregroundColor: foregroundColor,
                                      icon: Image(systemName: "map.fill"),
@@ -116,9 +117,12 @@ public struct RoadmapView: View {
     
     // MARK: - Variables
     
+    @Environment(\.presentationMode) var presentationMode
+    
     @StateObject var topicsViewModel = RoadKitTopicsViewModel.shared
     
     @State var shouldShowFeedback = false
+    @State var shouldShowChangeLog = false
     @State var roadmapSelection: RoadmapSelection = .features
     
     @Binding var isPresented: Bool
@@ -146,8 +150,12 @@ public struct RoadmapView: View {
         shouldShowFeedback = true
     }
     
+    private func showChangelogSheet() {
+        shouldShowChangeLog = true
+    }
+    
     private func dismissView() {
-        isPresented = false
+        presentationMode.wrappedValue.dismiss()
     }
     
 }

@@ -22,10 +22,10 @@ struct FeedbackTypeSelectionView: View {
                             .frame(width: LayoutValues.buttonSize, height: LayoutValues.buttonSize)
                             .background(backgroundColor)
                             .clipShape(Circle())
-                            .overlay {
+                            .overlay (
                                 Circle()
                                     .strokeBorder(self.type == type ? foregroundColor : .clear, lineWidth: 2)
-                            }
+                            )
                     }
                     .buttonStyle(.plain)
                 }

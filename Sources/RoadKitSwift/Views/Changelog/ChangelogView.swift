@@ -6,14 +6,12 @@
 //
 
 import SwiftUI
-import IONavigation
 
 struct ChangelogView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            Navigationbar(title: Strings.changelogHeader)
-                .backItem()
+            NavigationBar(header: Strings.changelogHeader, showButtonToCloseView: true, foregroundColor: foregroundColor, action: dismissView)
             
             if !topicsViewModel.didFetchTopics {
                 Spacer()
@@ -42,6 +40,9 @@ struct ChangelogView: View {
         }
         .background(primaryBackgroundColor)
         .hiddenNavigationBarStyle()
+        #if os(macOS)
+        .frame(minWidth: 600, maxWidth: 600, minHeight: 600, maxHeight: 600)
+        #endif
     }
     
     
@@ -54,4 +55,12 @@ struct ChangelogView: View {
     
     let topicsViewModel: RoadKitTopicsViewModel
     
+    @Binding var isPresented: Bool
+    
+    
+    // MARK: - Functions
+    
+    private func dismissView() {
+        isPresented = false
+    }
 }
