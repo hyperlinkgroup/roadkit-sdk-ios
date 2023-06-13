@@ -11,7 +11,7 @@ struct ChangelogView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            Navigationbar(header: Strings.changelogHeader, showButtonToCloseView: true, foregroundColor: foregroundColor, action: dismissView)
+            NavigationBar(header: Strings.changelogHeader, showButtonToCloseView: true, foregroundColor: foregroundColor, action: dismissView)
             
             if !topicsViewModel.didFetchTopics {
                 Spacer()

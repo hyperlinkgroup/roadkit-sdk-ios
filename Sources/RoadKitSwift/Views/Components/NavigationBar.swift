@@ -1,5 +1,5 @@
 //
-//  Navigationbar.swift
+//  NavigationBar.swift
 //  
 //
 //  Created by Heiko Rothermel on 09.06.23.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Navigationbar: View {
+struct NavigationBar: View {
     
     var body: some View {
         HStack(spacing: Values.minorPadding) {

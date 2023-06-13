@@ -27,7 +27,6 @@ struct CustomTextEditor: View {
                 .cornerRadius(Values.cornerRadius)
                 .background(Color.clear)
                 .font(.body)
-                .opacity(text.isEmpty ? 1 : 1)
                 .onChange(of: text) { text = $0 }
                 #if os(iOS)
                 .padding(.top, LayoutValues.minorPadding / 2)

@@ -11,7 +11,7 @@ struct FeedbackView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            Navigationbar(header: Strings.feedbackHeader, showButtonToCloseView: true, foregroundColor: foregroundColor, action: dismissView)
+            NavigationBar(header: Strings.feedbackHeader, showButtonToCloseView: true, foregroundColor: foregroundColor, action: dismissView)
             
             if feedbackSent {
                 FeedbackPlaceholderView(image: Image(systemName: "hands.clap"), description: Strings.placeholderFeedbackSent)
