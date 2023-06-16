@@ -19,44 +19,24 @@ public struct RoadmapView: View {
     
     public var body: some View {
         NavigationStack {
-            VStack(spacing: 0) {
+            VStack(spacing: LayoutValues.minorPadding) {
                 Navigationbar(title: Strings.roadmapHeader)
                     .if(isPresented) { navigationBar in
                         navigationBar.navigationItem(image: Image(systemName: "chevron.down"), color: foregroundColor, action: dismissView)
                     }
                 
                 VStack(spacing: LayoutValues.middlePadding * 2) {
-                    HStack(spacing: LayoutValues.minorPadding) {
-                        Button(action: showFeedbackSheet) {
-                            RoadmapSelectionView(backgroundColor: secondaryBackgroundColor,
-                                                 foregroundColor: foregroundColor,
-                                                 icon: Image(systemName: "lightbulb.fill"),
-                                                 header: Strings.feedbackHeader,
-                                                 details: Strings.feedbackDescription)
-                        }
-                        
-                        NavigationLink {
-                            ChangelogView(primaryBackgroundColor: primaryBackgroundColor,
-                                          secondaryBackgroundColor: secondaryBackgroundColor,
-                                          foregroundColor: foregroundColor,
-                                          topicsViewModel: topicsViewModel)
-                        } label: {
-                            RoadmapSelectionView(backgroundColor: secondaryBackgroundColor,
-                                                 foregroundColor: foregroundColor,
-                                                 icon: Image(systemName: "map.fill"),
-                                                 header: Strings.changelogHeader,
-                                                 details: Strings.changelogDescription)
-                        }
-                    }
-                    .padding(.horizontal, LayoutValues.minorPadding)
-                    
                     if !topicsViewModel.didFetchTopics {
+                        actionButtonView
+                        
                         Spacer()
                         ProgressView()
                         Spacer()
                     } else {
                         ScrollView(showsIndicators: false) {
                             VStack(spacing: LayoutValues.majorPadding) {
+                                actionButtonView
+                                
                                 VStack(spacing: LayoutValues.minorPadding / 2) {
                                     Text(Strings.whatsNext, bundle: .module)
                                         .font(.headline)
@@ -73,7 +53,7 @@ public struct RoadmapView: View {
                                     .labelsHidden()
                                     .padding(.bottom, LayoutValues.minorPadding)
                                     
-                                    if topicsViewModel.didFetchTopics && topicViewModels.isEmpty {
+                                    if topicViewModels.isEmpty {
                                         ListPlaceholderView(backgroundColor: secondaryBackgroundColor, foregroundColor: foregroundColor)
                                     } else {
                                         LazyVStack(spacing: LayoutValues.minorPadding) {
@@ -91,10 +71,11 @@ public struct RoadmapView: View {
                                 
                                 LogoView(backgroundColor: secondaryBackgroundColor)
                             }
-                            .padding([.horizontal, .bottom], LayoutValues.minorPadding)
+                            .padding(.bottom, LayoutValues.minorPadding)
                         }
                     }
                 }
+                .padding(.horizontal, LayoutValues.minorPadding)
             }
             .buttonStyle(.plain)
             .background(primaryBackgroundColor)
@@ -107,6 +88,30 @@ public struct RoadmapView: View {
         }
     }
     
+    var actionButtonView: some View {
+        HStack(spacing: LayoutValues.minorPadding) {
+            Button(action: showFeedbackSheet) {
+                RoadmapSelectionView(backgroundColor: secondaryBackgroundColor,
+                                     foregroundColor: foregroundColor,
+                                     icon: Image(systemName: "lightbulb.fill"),
+                                     header: Strings.feedbackHeader,
+                                     details: Strings.feedbackDescription)
+            }
+            
+            NavigationLink {
+                ChangelogView(primaryBackgroundColor: primaryBackgroundColor,
+                              secondaryBackgroundColor: secondaryBackgroundColor,
+                              foregroundColor: foregroundColor,
+                              topicsViewModel: topicsViewModel)
+            } label: {
+                RoadmapSelectionView(backgroundColor: secondaryBackgroundColor,
+                                     foregroundColor: foregroundColor,
+                                     icon: Image(systemName: "map.fill"),
+                                     header: Strings.changelogHeader,
+                                     details: Strings.changelogDescription)
+            }
+        }
+    }
     
     
     // MARK: - Variables
