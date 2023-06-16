@@ -132,12 +132,14 @@ public struct RoadmapView: View {
     let foregroundColor: Color
     
     
-    
     // MARK: Cumputed Properties
     
     private var topicViewModels: [RoadKitTopicViewModel] {
         switch roadmapSelection {
-        case .features: return topicsViewModel.featureViewModels
+        case .features:
+            var featureAndImprovementViewModel = topicsViewModel.featureViewModels + topicsViewModel.improvementViewModels + topicsViewModel.feedbackViewModels
+            featureAndImprovementViewModel.sort{ $0.object.title < $1.object.title}
+            return featureAndImprovementViewModel
         case .bugs: return topicsViewModel.bugViewModels
         }
     }

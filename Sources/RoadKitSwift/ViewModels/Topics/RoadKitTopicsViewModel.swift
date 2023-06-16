@@ -29,6 +29,16 @@ class RoadKitTopicsViewModel: ObservableObject, Identifiable {
                     .sorted { $0.title < $1.title }
                     .map { RoadKitTopicViewModel(topic: $0) }
                 
+                self.improvementViewModels = topics
+                    .filter { $0.type == RoadKitTopicType.improvement.rawValue && $0.status != RoadKitTopicStatus.done.rawValue }
+                    .sorted { $0.title < $1.title }
+                    .map { RoadKitTopicViewModel(topic: $0) }
+                
+                self.feedbackViewModels = topics
+                    .filter { $0.type == RoadKitTopicType.feedback.rawValue && $0.status != RoadKitTopicStatus.done.rawValue }
+                    .sorted { $0.title < $1.title }
+                    .map { RoadKitTopicViewModel(topic: $0) }
+                
                 self.bugViewModels = topics
                     .filter { $0.type == RoadKitTopicType.bug.rawValue && $0.status != RoadKitTopicStatus.done.rawValue }
                     .sorted { $0.title < $1.title }
@@ -57,6 +67,8 @@ class RoadKitTopicsViewModel: ObservableObject, Identifiable {
     @ObservedObject var roadkitManager = RoadKitManager.shared
     
     @Published var featureViewModels = [RoadKitTopicViewModel]()
+    @Published var improvementViewModels = [RoadKitTopicViewModel]()
+    @Published var feedbackViewModels = [RoadKitTopicViewModel]()
     @Published var bugViewModels = [RoadKitTopicViewModel]()
     
     @Published var changelogViewModels = [RoadKitChangelogViewModel]()
