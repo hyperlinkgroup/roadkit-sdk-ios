@@ -35,7 +35,6 @@ public struct RoadmapSelectionView: View {
                 Text(details, bundle: .module)
                     .font(.callout)
                     .multilineTextAlignment(.leading)
-                    .lineLimit(2, reservesSpace: true)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             .foregroundColor(.primary)

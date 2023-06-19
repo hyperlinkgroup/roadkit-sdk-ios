@@ -19,7 +19,7 @@ public struct RoadmapView: View {
     public var body: some View {
         VStack(spacing: LayoutValues.minorPadding) {
             #if os(iOS)
-            Navigationbar(header: Strings.roadmapHeader, showButtonToCloseView: true, foregroundColor: foregroundColor, action: dismissView)
+            NavigationBar(header: Strings.roadmapHeader, showButtonToCloseView: true, foregroundColor: foregroundColor, action: dismissView)
             #else
             NavigationBar(header: Strings.roadmapHeader, showButtonToCloseView: false, foregroundColor: foregroundColor, action: dismissView)
             #endif
