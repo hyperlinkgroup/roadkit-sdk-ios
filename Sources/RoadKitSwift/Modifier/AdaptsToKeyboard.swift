@@ -13,8 +13,6 @@ struct AdaptsToKeyboard: ViewModifier {
     func body(content: Content) -> some View {
         GeometryReader { geometry in
             content
-                .interactiveDismissDisabled(keyboardIsShowing)
-                .scrollDismissesKeyboard(.never)
                 .padding(.bottom, currentHeight)
                 .animation(.easeInOut, value: currentHeight)
                 .onAppear {

@@ -38,7 +38,7 @@ This is a working example of how our preset looks:
 #### Requirements
 The SDK requires an account for RoadKit with a registered project.
 
-- iOS 16.0+ / macOS 13.0
+- iOS 14.0+ / macOS 13.0
 - Xcode 14+
 - Swift 5.7+
 
